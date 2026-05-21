@@ -142,5 +142,221 @@
       "correct_index": 1,
       "explanation": "La cilindricidad NO debe llevar modificador de condicion de material (ni MMC ni LMC). Tampoco requiere datum de referencia. La tolerancia de cilindricidad aplica independientemente del tamano (RFS por defecto). Si se aplica junto con principio de independencia o variacion en estado libre, la tolerancia puede exceder la de tamano."
     }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "zona_tolerancia_paralelismo",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando se aplica paralelismo a una superficie plana referenciada a un plano datum, la zona de tolerancia esta formada por...",
+      "options": [
+        "Un cilindro paralelo al plano datum",
+        "Dos planos paralelos separados por el valor de tolerancia, paralelos al plano datum",
+        "Dos circulos concentricos en cada seccion transversal",
+        "Un plano perpendicular al datum de referencia"
+      ],
+      "correct_index": 1,
+      "explanation": "La zona de tolerancia de paralelismo para una superficie plana son dos planos paralelos separados por el valor de tolerancia, ambos paralelos al plano datum de referencia. Todos los elementos de la superficie deben estar contenidos entre estos dos planos. A diferencia de la planicidad, aqui si se requiere datum de referencia porque se controla la orientacion relativa."
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "paralelismo_vs_planicidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Una diferencia clave entre paralelismo y planicidad es que...",
+      "options": [
+        "La planicidad requiere datum y el paralelismo no",
+        "El paralelismo siempre requiere datum de referencia y controla orientacion, mientras que la planicidad no requiere datum y controla solo forma",
+        "El paralelismo solo aplica a ejes, nunca a superficies planas",
+        "La planicidad permite modificadores MMC y el paralelismo no"
+      ],
+      "correct_index": 1,
+      "explanation": "El paralelismo es un control de orientacion y SIEMPRE requiere datum de referencia porque define la relacion angular (0 grados) entre la superficie controlada y el datum. La planicidad es un control de forma que NO requiere datum porque solo controla que la superficie sea plana en si misma, sin referencia a ninguna otra geometria. Al aplicar paralelismo a una superficie, tambien se controla planicidad como extension del control de orientacion."
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "paralelismo_eje_cilindrico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Al especificar paralelismo en un eje cilindrico con el simbolo de diametro en la caja de control, la zona de tolerancia es...",
+      "options": [
+        "Dos planos paralelos separados por el valor de tolerancia",
+        "Un cilindro cuyo diametro es el valor de tolerancia, paralelo al eje datum",
+        "Dos circulos concentricos en la seccion transversal",
+        "Una zona cuadrada centrada en el eje datum"
+      ],
+      "correct_index": 1,
+      "explanation": "Cuando se especifica el simbolo de diametro en la caja de control de paralelismo aplicado a un eje cilindrico, la zona de tolerancia es un cilindro de diametro igual al valor de tolerancia. El eje del rasgo debe estar contenido dentro de este cilindro paralelo al eje datum. Esto es mas representativo de la funcionalidad real del rasgo cilindrico."
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "paralelismo_aplicacion_troquel",
+    "source": "curso_pdf",
+    "content": {
+      "question": "En un troquel de embutido para lamina de acero, el paralelismo es critico para...",
+      "options": [
+        "Controlar el acabado superficial de la lamina embutida",
+        "Asegurar que las superficies de guia del troquel sean paralelas para un embutido uniforme y evitar deformaciones no controladas en la lamina",
+        "Definir el radio de curvatura del punzon",
+        "Especificar la dureza del material del troquel"
+      ],
+      "correct_index": 1,
+      "explanation": "En troqueles de embutido para lamina de acero, el paralelismo de las superficies de guia es fundamental. Si las guias no son paralelas, el punzon no desciende uniformemente, causando deformaciones no controladas en la lamina, variaciones de espesor y posibles roturas. El paralelismo garantiza que la fuerza de embutido se distribuya uniformemente sobre toda la superficie de la lamina."
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "zona_tolerancia_perpendicularidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando se aplica perpendicularidad a una superficie plana referenciada a un plano datum, la zona de tolerancia esta formada por...",
+      "options": [
+        "Dos planos paralelos perpendiculares al plano datum, separados por el valor de tolerancia",
+        "Un cilindro perpendicular al plano datum",
+        "Dos circulos concentricos perpendiculares al datum",
+        "Una zona cuadrada centrada en el punto de interseccion"
+      ],
+      "correct_index": 0,
+      "explanation": "La zona de tolerancia de perpendicularidad para una superficie plana son dos planos paralelos perpendiculares al plano datum de referencia, separados por el valor de tolerancia. Todos los elementos de la superficie controlada deben estar entre estos dos planos. Al aplicar perpendicularidad a una superficie, ademas se controla planicidad como extension del control de orientacion."
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "perpendicularidad_eje_mmc",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Al especificar perpendicularidad con modificador MMC en el eje de un saliente cilindrico, que ocurre cuando el saliente se aleja de su condicion de maximo material?",
+      "options": [
+        "La zona de tolerancia se reduce proporcionalmente",
+        "La tolerancia de perpendicularidad aumenta en la misma cantidad que el rasgo se aleja de MMC",
+        "La perpendicularidad ya no aplica al rasgo",
+        "El datum de referencia cambia automaticamente"
+      ],
+      "correct_index": 1,
+      "explanation": "Con el modificador MMC en perpendicularidad, cuando el rasgo se aleja de su condicion de maximo material, se permite tolerancia extra igual a la cantidad de esa desviacion. Por ejemplo, si el pin en MMC tiene tolerancia de 0.05 de perpendicularidad, y el pin se manufactura 0.02 mas pequeno que MMC, la tolerancia permisible aumenta a 0.07. Esto reduce costos de manufactura sin afectar el ensamble funcional."
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "perpendicularidad_aplicacion_troquel",
+    "source": "curso_pdf",
+    "content": {
+      "question": "En la fabricacion de un troquel de embutido, la perpendicularidad del punzon respecto a la placa base es critica porque...",
+      "options": [
+        "Solo afecta el acabado estetico de la pieza embutida",
+        "Si el punzon no es perpendicular a la placa base, la lamina de acero recibe fuerzas laterales no deseadas que causan adelgazamiento irregular, arrugas o ruptura",
+        "La perpendicularidad del punzon no tiene efecto en el proceso de embutido",
+        "Solo importa la perpendicularidad en troqueles de corte, no de embutido"
+      ],
+      "correct_index": 1,
+      "explanation": "La perpendicularidad del punzon al plano de la placa base es uno de los controles mas criticos en un troquel de embutido. Un punzon inclinado introduce fuerzas laterales que generan adelgazamiento no uniforme de la lamina de acero, arrugas en las paredes del embutido y pueden causar ruptura prematura del material. En peltre y acero esmaltado, estos defectos comprometen tanto la funcion como la estetica de la pieza final."
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "perpendicularidad_zona_cilindrica",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando se especifica perpendicularidad con el simbolo de diametro en la caja de control aplicada al eje de un agujero, la zona de tolerancia es...",
+      "options": [
+        "Dos planos paralelos perpendiculares al plano datum",
+        "Un cilindro perpendicular al plano datum cuyo diametro es el valor de tolerancia",
+        "Una esfera centrada en la posicion verdadera del eje",
+        "Un cuadrado cuyo lado es igual al valor de tolerancia"
+      ],
+      "correct_index": 1,
+      "explanation": "Cuando se especifica el simbolo de diametro junto con perpendicularidad aplicada a un eje, la zona de tolerancia es un cilindro perpendicular al plano datum. El diametro de este cilindro es el valor de tolerancia especificado. El eje del agujero debe estar completamente contenido dentro de este cilindro. Esta zona cilindrica controla la perpendicularidad del eje en todas las direcciones simultaneamente."
+    }
+  },
+  {
+    "control": "Posicion",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "posicion_zona_tolerancia",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La forma mas comun de la zona de tolerancia en el control de posicion es...",
+      "options": [
+        "Cuadrada, con lados iguales al valor de tolerancia",
+        "Cilindrica, con diametro igual al valor de tolerancia especificado",
+        "Dos planos paralelos separados por el valor de tolerancia",
+        "Una esfera centrada en la posicion verdadera"
+      ],
+      "correct_index": 1,
+      "explanation": "La zona de tolerancia mas comun en posicion es cilindrica, lo cual es una de sus principales ventajas: permite 57% mas area de tolerancia que una zona cuadrada con el mismo valor nominal. El eje o plano central del FOS debe estar dentro de este cilindro centrado en la posicion verdadera. La posicion verdadera esta definida por dimensiones basicas (encuadradas) a los datums de referencia."
+    }
+  },
+  {
+    "control": "Posicion",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "posicion_dimension_basica",
+    "source": "curso_pdf",
+    "content": {
+      "question": "En un control de posicion, las dimensiones que definen la posicion verdadera deben ser...",
+      "options": [
+        "Dimensiones con tolerancia bilateral simetrica",
+        "Dimensiones de referencia (entre parentesis)",
+        "Dimensiones basicas (encuadradas), teoricamente exactas",
+        "Dimensiones con tolerancia unilateral positiva"
+      ],
+      "correct_index": 2,
+      "explanation": "Las dimensiones que localizan la posicion verdadera DEBEN ser dimensiones basicas, representadas encuadradas en el dibujo. Las dimensiones basicas son teoricamente exactas y no tienen tolerancia por si mismas. Toda la tolerancia de localizacion esta contenida en la zona de tolerancia de posicion especificada en la caja de control de rasgo. Usar dimensiones basicas evita la acumulacion de tolerancias que ocurriria con dimensiones toleranciadas encadenadas."
+    }
+  },
+  {
+    "control": "Posicion",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "posicion_ventaja_mmc",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Una ventaja del modificador MMC en tolerancia de posicion es que...",
+      "options": [
+        "Elimina la necesidad de especificar un datum de referencia",
+        "Permite verificar el control con calibradores fijos y otorga tolerancia extra cuando el rasgo se aleja de MMC",
+        "La zona de tolerancia se vuelve cuadrada, facilitando la manufactura",
+        "Convierte la posicion en un control de forma, no de localizacion"
+      ],
+      "correct_index": 1,
+      "explanation": "El modificador MMC en posicion tiene dos ventajas principales: primero, permite el uso de calibradores fijos (go/no-go) para verificacion rapida y economica; segundo, cuando el rasgo se manufactura con un tamano diferente al MMC, se permite tolerancia de posicion adicional igual a la diferencia respecto al MMC. Esto reduce costos de manufactura porque las piezas bien dimensionadas tienen mas margen de localizacion, sin afectar el ensamble funcional."
+    }
+  },
+  {
+    "control": "Posicion",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "posicion_aplicacion_troquel",
+    "source": "curso_pdf",
+    "content": {
+      "question": "En troqueles de embutido para lamina de acero, la tolerancia de posicion se usa principalmente para...",
+      "options": [
+        "Controlar el acabado superficial del punzon",
+        "Definir el radio de acuerdo entre el punzon y la matriz",
+        "Localizar con precision los agujeros de guia y pines de localizacion que garantizan el centrado correcto de la lamina durante el embutido",
+        "Especificar el material del troquel"
+      ],
+      "correct_index": 2,
+      "explanation": "En troqueles de embutido para lamina de acero esmaltada, la posicion es critica para localizar los agujeros de guia y pines de localizacion. Estos elementos centran y posicionan la lamina antes y durante el embutido. Un error de posicion en los pines provoca que la lamina entre descentrada al troquel, causando adelgazamiento asimetrico, arrugas o ruptura del material. La posicion con MMC permite fabricar los agujeros con tolerancias economicas sin comprometer el ensamble funcional del troquel."
+    }
   }
 ]

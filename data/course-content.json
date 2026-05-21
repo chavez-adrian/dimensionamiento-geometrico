@@ -54,5 +54,100 @@
       "La superficie cilindrica debera estar contenida dentro de dos cilindros concentricos, uno con el radio del valor de tolerancia mayor que el otro.",
       "Se aplica a rasgos diametrales: cilindros externos e internos."
     ]
+  },
+  "Paralelismo": {
+    "terminos": [
+      "paralelismo",
+      "tolerancia de orientacion",
+      "zona de tolerancia",
+      "planos paralelos",
+      "eje paralelo",
+      "datum de referencia",
+      "plano datum",
+      "eje datum",
+      "RFS",
+      "MMC",
+      "zona cilindrica",
+      "equidistancia",
+      "control de orientacion",
+      "grados de libertad"
+    ],
+    "definicion": "El paralelismo es la condicion de una superficie, plano central de un rasgo o eje de un rasgo donde todos los elementos equidistan a lo largo de su longitud desde uno o mas planos datum o eje datum. Requiere siempre un datum de referencia. La zona de tolerancia esta definida por dos planos paralelos separados por el valor de tolerancia, paralelos al plano datum o eje datum especificado.",
+    "reglas": [
+      "Siempre se requiere al menos un datum de referencia en la caja de control de rasgo.",
+      "Al aplicar paralelismo a una superficie plana, se controla planicidad como extension del control de orientacion.",
+      "Cuando no sea suficiente el control de orientacion, debe aplicarse planicidad simultaneamente.",
+      "Solo controla la rotacion en grados relativos al datum de referencia, no restringe la traslacion.",
+      "Si con el datum primario no es suficiente para controlar la libertad de rotacion, se deben adicionar rasgos datum secundarios.",
+      "Cuando se aplica a un FOS cilindrico, aplica al eje del FOS.",
+      "Al aplicarse a superficies planas, la zona de tolerancia son dos planos paralelos al plano datum.",
+      "Al aplicarse a ejes, la zona de tolerancia puede ser cilindrica (con simbolo de diametro) o dos planos paralelos.",
+      "La tolerancia de paralelismo puede estar ya controlada indirectamente por una tolerancia de localizacion o de perfil.",
+      "Aplicaciones tipicas: superficies de acoplamiento, guias de maquinas, superficies de referencia en troqueles."
+    ]
+  },
+  "Perpendicularidad": {
+    "terminos": [
+      "perpendicularidad",
+      "tolerancia de orientacion",
+      "zona de tolerancia",
+      "angulo recto",
+      "datum de referencia",
+      "plano datum",
+      "eje datum",
+      "RFS",
+      "MMC",
+      "zona cilindrica",
+      "plano central",
+      "control de orientacion",
+      "frontera de condicion virtual",
+      "grados de libertad"
+    ],
+    "definicion": "La perpendicularidad es la condicion de una superficie, plano central de un rasgo o eje de un rasgo que esta a un angulo recto (90 grados) a un plano datum o eje datum. Requiere siempre un datum de referencia. La zona de tolerancia esta definida por dos planos paralelos perpendiculares al datum de referencia, o una zona cilindrica cuando se especifica diametro.",
+    "reglas": [
+      "Siempre se requiere al menos un datum de referencia en la caja de control de rasgo.",
+      "Al aplicar perpendicularidad a una superficie plana, se controla planicidad como extension del control de orientacion.",
+      "Solo controla la rotacion en grados relativos al datum de referencia, no restringe la traslacion.",
+      "Cuando se aplica a un FOS cilindrico, aplica al eje del FOS.",
+      "Si se especifica el simbolo de diametro en la caja de control, la zona de tolerancia es cilindrica.",
+      "Si no se especifica diametro, la zona de tolerancia son dos planos paralelos perpendiculares al datum.",
+      "La tolerancia puede estar ya controlada indirectamente por una tolerancia de localizacion.",
+      "Cuando el rasgo se aleja de su MMC, se puede ganar tolerancia adicional con el modificador MMC.",
+      "Aplicaciones tipicas: agujeros roscados, salientes y postes en troqueles, superficies de referencia para inspeccion."
+    ]
+  },
+  "Posicion": {
+    "terminos": [
+      "posicion",
+      "posicion verdadera",
+      "tolerancia de localizacion",
+      "zona de tolerancia",
+      "dimension basica",
+      "FOS",
+      "MMC",
+      "LMC",
+      "RFS",
+      "condicion virtual",
+      "frontera de condicion virtual",
+      "datum de referencia",
+      "desplazamiento de datum",
+      "tolerancia extra",
+      "acumulacion de tolerancia",
+      "zona de tolerancia cilindrica"
+    ],
+    "definicion": "La posicion verdadera es la localizacion teoricamente exacta de un FOS definida por las dimensiones basicas. El control de tolerancia de posicion es la tolerancia geometrica que define la tolerancia de localizacion de un FOS desde la posicion verdadera. La zona de tolerancia comun es cilindrica. Las dimensiones que definen la posicion verdadera son basicas (encuadradas).",
+    "reglas": [
+      "Siempre se requiere al menos un datum de referencia en la caja de control de rasgo.",
+      "Las dimensiones que localizan la posicion verdadera deben ser dimensiones basicas (encuadradas).",
+      "La zona de tolerancia comun es cilindrica, lo cual permite 57% mas tolerancia que zonas cuadradas.",
+      "Con modificador MMC se permite tolerancia extra cuando el rasgo se aleja de su MMC.",
+      "Con modificador LMC se permite tolerancia extra cuando el rasgo se aleja de su LMC.",
+      "Evita la acumulacion de tolerancia al usar dimensiones basicas en lugar de tolerancias encadenadas.",
+      "Permite el uso de calibradores de medicion cuando se especifica MMC.",
+      "Cuando la linea de centro de un FOS coincide con un eje datum, la dimension basica de localizacion es implicitamente cero.",
+      "Entre la linea de centro de rasgos en un arreglo y la referencia primaria, esta implicito un angulo de 90 grados.",
+      "La zona de tolerancia proyectada se usa para rasgos como agujeros roscados donde el sujetador que sobresale podria interferir con la parte apareada.",
+      "Aplicaciones tipicas: localizacion de agujeros para ensamble, agujeros roscados, ranuras y salientes en troqueles de embutido."
+    ]
   }
 }
