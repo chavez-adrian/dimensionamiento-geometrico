@@ -1,6 +1,6 @@
 ## Estado al 2026-05-21
 
-### Issues completados hoy
+### Issues completados
 
 **Issue #3 — COMPLETADO** (commit 096675b, pushed)
 - data/course-content.json: glosario Planitud + Cilindricidad extraido de PDFs Modulo 3
@@ -19,22 +19,26 @@
 - test/exercise-generator.test.js: 5 tests, todos GREEN
 - package.json: script seed:nivel2 agregado
 
+**Issue #5 — COMPLETADO** (commit c28a7f1, pushed)
+- data/course-content.json: glosario de Paralelismo, Perpendicularidad y Posicion extraido de Modulo 4 y Modulo 6
+- data/exercise-bank-seed.json: 12 preguntas de repaso de Modulos 4 y 6 (4 por control)
+- exercise_bank en Neon: 12 ejercicios nuevos insertados (seed ejecutado)
+- knowledge_state en Neon: 9 filas para 3 nuevos controles verificadas (creadas en Issue #2, nivel 1 desbloqueado)
+- test/exercise-generator.test.js: 6 tests nuevos (nivel 1 y 2 para Paralelismo, Perpendicularidad, Posicion)
+
 ### Tests actuales
 - test/knowledge-state-engine.test.js: 20/20 GREEN
 - test/state-store.test.js: 5/5 GREEN
-- test/exercise-generator.test.js: 5/5 GREEN (requieren RED API key + DB)
-- Total: 30 tests GREEN
+- test/exercise-generator.test.js: 11/11 GREEN (requieren API key + DB)
+- Total: 36 tests GREEN
 
 ### Issues pendientes
-- Issue #5: BLOQUEADO — requiere PDFs del lunes (contenido Nivel 3 de Modulo avanzado)
 - Issue #6: HITL — no implementar
-- Issue #7: BLOQUEADO por #4 y #6
-
-### Proximo paso al resumir
-Esperar PDFs del lunes para desbloquear Issue #5.
-Issue #7 requiere que #6 (HITL) este resuelto tambien.
+- Issue #7: BLOQUEADO por #6
 
 ### Infraestructura activa
-- Neon DB: gdt_learning — knowledge_state (15 filas adrian), exercise_bank (8 filas nivel 2)
-- Render: deploy pendiente (auto-deploy desde master en GitHub)
+- Neon DB: gdt_learning
+  - knowledge_state: 15 filas adrian (5 controles x 3 niveles)
+  - exercise_bank: 20 filas total (8 Planitud/Cilindricidad nivel 2 + 12 nuevas Paralelismo/Perpendicularidad/Posicion nivel 2)
+- Render: auto-deploy desde master en GitHub
 - ANTHROPIC_API_KEY: en .env local y en Render env vars
