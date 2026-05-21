@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Pool } = require('pg');
 const { generateForControl } = require('./exercise-generator');
 const { evaluate } = require('./answer-evaluator');
-const { processAnswer, shouldUnlockNext } = require('./knowledge-state-engine');
+const { processAnswer, shouldUnlockNext, getFanOutControls } = require('./knowledge-state-engine');
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const USER_ID = 'adrian';
@@ -82,6 +82,14 @@ async function submitAnswer(exerciseId, answerIndex, exerciseData) {
     if (newState[control][nextNivel]) {
       newState[control][nextNivel].unlocked = true;
       await saveCell(control, nextNivel, newState[control][nextNivel]);
+    }
+  }
+
+  const fanOut = getFanOutControls(newState, control, nivel);
+  for (const fanControl of fanOut) {
+    if (newState[fanControl] && newState[fanControl][1] && !newState[fanControl][1].unlocked) {
+      newState[fanControl][1].unlocked = true;
+      await saveCell(fanControl, 1, newState[fanControl][1]);
     }
   }
 

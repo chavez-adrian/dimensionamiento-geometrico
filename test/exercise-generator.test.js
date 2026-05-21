@@ -101,4 +101,11 @@ describe('ExerciseGenerator', () => {
       assert.ok(mentionsContext, 'at least one dynamic exercise should mention embutido context');
     }, { timeout: TIMEOUT * 3 });
   });
+
+  describe('Fundamentos nivel 2', () => {
+    it('returns exercise with required fields for Fundamentos nivel 2', async () => {
+      const ex = await generateForControl('Fundamentos', 2, { forceDynamic: true });
+      assertExerciseStructure(ex);
+    }, { timeout: TIMEOUT });
+  });
 });

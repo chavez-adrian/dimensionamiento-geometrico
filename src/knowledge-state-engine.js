@@ -47,4 +47,11 @@ function shouldUnlockNext(state, control, nivel) {
   return true;
 }
 
-module.exports = { getInitialState, processAnswer, checkMastery, shouldUnlockNext };
+function getFanOutControls(state, control, nivel) {
+  if (control !== 'Fundamentos' || nivel !== 2) return [];
+  const cell = state[control] && state[control][nivel];
+  if (!cell || !cell.mastered) return [];
+  return ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+}
+
+module.exports = { getInitialState, processAnswer, checkMastery, shouldUnlockNext, getFanOutControls };

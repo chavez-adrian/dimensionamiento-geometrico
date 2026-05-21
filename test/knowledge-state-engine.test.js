@@ -5,6 +5,7 @@ const {
   processAnswer,
   checkMastery,
   shouldUnlockNext,
+  getFanOutControls,
 } = require('../src/knowledge-state-engine');
 
 describe('KnowledgeStateEngine', () => {
@@ -161,6 +162,29 @@ describe('KnowledgeStateEngine', () => {
       controls.forEach(control => {
         assert.equal(state[control][1].unlocked, false, `${control} L1 should be locked until Fundamentos is mastered`);
       });
+    });
+  });
+
+  describe('getFanOutControls', () => {
+    it('returns 5 geometric controls when Fundamentos L2 is mastered', () => {
+      const state = getInitialState();
+      state['Fundamentos'][2].mastered = true;
+      const fanOut = getFanOutControls(state, 'Fundamentos', 2);
+      assert.deepEqual(fanOut.sort(), ['Cilindricidad', 'Paralelismo', 'Perpendicularidad', 'Planicidad', 'Posicion'].sort());
+    });
+
+    it('returns empty array when Fundamentos L2 is not mastered', () => {
+      const state = getInitialState();
+      state['Fundamentos'][2].mastered = false;
+      const fanOut = getFanOutControls(state, 'Fundamentos', 2);
+      assert.deepEqual(fanOut, []);
+    });
+
+    it('returns empty array for non-Fundamentos control', () => {
+      const state = getInitialState();
+      state['Planicidad'][1].mastered = true;
+      const fanOut = getFanOutControls(state, 'Planicidad', 1);
+      assert.deepEqual(fanOut, []);
     });
   });
 

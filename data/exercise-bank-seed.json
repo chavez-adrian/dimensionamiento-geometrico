@@ -358,5 +358,149 @@
       "correct_index": 2,
       "explanation": "En troqueles de embutido para lamina de acero esmaltada, la posicion es critica para localizar los agujeros de guia y pines de localizacion. Estos elementos centran y posicionan la lamina antes y durante el embutido. Un error de posicion en los pines provoca que la lamina entre descentrada al troquel, causando adelgazamiento asimetrico, arrugas o ruptura del material. La posicion con MMC permite fabricar los agujeros con tolerancias economicas sin comprometer el ensamble funcional del troquel."
     }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cual de los siguientes NO es un beneficio del uso de GD&T sobre el dimensionamiento coordenado convencional?",
+      "options": [
+        "Zonas de tolerancia cilindricas que permiten mas area util",
+        "Instrucciones de inspeccion mas claras mediante el sistema de datums",
+        "Zonas de tolerancia de tamano fijo independientes del tamano del rasgo",
+        "Posibilidad de tolerancia extra (bonus tolerance) con modificadores MMC o LMC"
+      ],
+      "correct_index": 2,
+      "explanation": "Las zonas de tolerancia de tamano FIJO son precisamente uno de los DEFECTOS del dimensionamiento coordenado, no un beneficio de GD&T. GD&T resuelve este problema mediante zonas cilindricas y tolerancia extra: cuando un rasgo se aleja de MMC, se permite tolerancia adicional igual a esa desviacion. Los beneficios reales de GD&T incluyen zonas cilindricas (57% mas area que zonas cuadradas), instrucciones de inspeccion claras y comunicacion inequivoca de requerimientos."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La Regla numero 1 de ASME Y14.5-2018 establece que la superficie de un rasgo de tamano regular no debe extenderse mas alla de la frontera de forma perfecta en que condicion?",
+      "options": [
+        "LMC (condicion de minimo material)",
+        "RFS (independiente del tamano del rasgo)",
+        "MMC (condicion de maximo material)",
+        "La condicion virtual"
+      ],
+      "correct_index": 2,
+      "explanation": "La Regla #1 establece que ningun punto de la superficie de un rasgo de tamano regular puede sobrepasar la frontera de FORMA PERFECTA EN MMC. Es decir, cuando el rasgo se fabrica en su maximo material, debe tener forma geometrica perfecta (cero error de forma). Conforme el rasgo se aleja de MMC hacia LMC, se permite una cantidad de error de forma igual a esa desviacion. Esta regla tambien se conoce como principio de envoltura."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cual es la condicion de material de un eje cuando su diametro es el mas grande permitido dentro de los limites de tolerancia?",
+      "options": [
+        "RFS - Independiente del tamano del rasgo",
+        "LMC - Condicion de minimo material",
+        "MMC - Condicion de maximo material",
+        "Condicion virtual"
+      ],
+      "correct_index": 2,
+      "explanation": "Para un rasgo EXTERNO como un eje, la condicion de MAXIMO MATERIAL (MMC) corresponde al diametro MAS GRANDE permitido, ya que en ese tamano el eje contiene la mayor cantidad de material. Para un rasgo interno (agujero) ocurre lo contrario: MMC es el diametro mas pequeno. Esta distincion es fundamental para calcular tolerancias extra (bonus tolerance) y para disenar calibradores pasa/no pasa."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando una tolerancia geometrica aplica independientemente del tamano actual del rasgo, se dice que aplica en:",
+      "options": [
+        "MMC - Condicion de maximo material",
+        "LMC - Condicion de minimo material",
+        "RFS - Independiente del tamano del rasgo",
+        "Condicion virtual"
+      ],
+      "correct_index": 2,
+      "explanation": "RFS (Regardless of Feature Size) significa que la tolerancia geometrica aplica para CUALQUIER tamano del rasgo dentro de sus limites. No hay tolerancia extra por alejarse de MMC o LMC. Segun la Regla #2 de ASME Y14.5-2018, RFS es la condicion por defecto cuando no se especifica ningun modificador de condicion de material. Se usa cuando se requiere control de forma, orientacion o localizacion independientemente del tamano fabricado, como en el control de simetria o coaxialidad funcional."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La tolerancia extra (bonus tolerance) en GD&T solo se permite cuando se usa cual modificador en la caja de control de rasgo?",
+      "options": [
+        "RFS o el simbolo de diametro",
+        "MMC o LMC",
+        "El modificador de zona proyectada",
+        "El modificador de plano tangente"
+      ],
+      "correct_index": 1,
+      "explanation": "La tolerancia extra (bonus tolerance) SOLO se genera cuando se especifica el modificador MMC o LMC en la caja de control de rasgo. La tolerancia extra es igual a la cantidad que el tamano actual del rasgo se ha alejado de la condicion de material especificada (MMC o LMC). Por ejemplo, con MMC: si el rasgo se fabrica mas pequeno que MMC en un eje, esa diferencia se suma a la tolerancia geometrica permitida. Esto reduce costos de manufactura sin comprometer la funcion de ensamble."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Segun la norma ASME Y14.5-2018, las dimensiones que localizan la posicion verdadera de un rasgo deben ser de que tipo?",
+      "options": [
+        "Dimensiones con tolerancia bilateral simetrica",
+        "Dimensiones de referencia (entre parentesis)",
+        "Dimensiones basicas (encuadradas), teoricamente exactas sin tolerancia propia",
+        "Dimensiones con tolerancia unilateral"
+      ],
+      "correct_index": 2,
+      "explanation": "Las dimensiones BASICAS son valores numericos teoricamente exactos, representadas encuadradas en el dibujo. No tienen tolerancia por si mismas: toda la tolerancia de localizacion esta contenida en la zona de tolerancia de la caja de control de rasgo. Su uso evita la acumulacion de tolerancias que ocurre con dimensiones encadenadas convencionales. Las dimensiones basicas son obligatorias para especificar la posicion verdadera en controles de posicion, angularidad, perfil y otros que requieren una referencia exacta."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La Regla #1 de ASME Y14.5-2018 NO aplica a cual de los siguientes materiales?",
+      "options": [
+        "Piezas mecanizadas de precision en acero",
+        "Componentes de aluminio fresados",
+        "Materiales de serie como barras, laminas, tuberias o perfiles estructurales",
+        "Engranes y piezas de transmision"
+      ],
+      "correct_index": 2,
+      "explanation": "La Regla #1 tiene excepciones importantes: NO aplica a materiales de serie como barras, laminas, tuberias o perfiles estructurales, que se fabrican bajo normas propias que ya prescriben condiciones de planicidad, rectitud y limites de tamano. Tampoco aplica a partes sujetas a variacion en estado libre (partes no rigidas). En estos casos, si se requiere control de forma, debe especificarse explicitamente una tolerancia geometrica de rectitud o planicidad en el dibujo."
+    }
+  },
+  {
+    "control": "Fundamentos",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "generico",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando se especifica MMC en el modificador de un control de orientacion aplicado a un eje cilindrico, que ocurre con la tolerancia geometrica cuando el rasgo se fabrica MAS PEQUENO que MMC?",
+      "options": [
+        "La tolerancia geometrica se reduce proporcionalmente",
+        "La tolerancia geometrica permanece constante sin importar el tamano",
+        "Se permite tolerancia geometrica adicional igual a la diferencia respecto a MMC",
+        "El control geometrico deja de aplicar al rasgo"
+      ],
+      "correct_index": 2,
+      "explanation": "Con el modificador MMC en un control geometrico, cuando el rasgo se fabrica ALEJANDOSE de MMC (es decir, mas pequeno para un rasgo externo), se genera una tolerancia extra igual a esa desviacion. Esta tolerancia extra se SUMA a la tolerancia especificada en la caja de control. Ejemplo: eje con tolerancia de perpendicularidad 0.05 a MMC, fabricado 0.03 mas pequeno que MMC, permite 0.05 + 0.03 = 0.08 de perpendicularidad total. Esto refleja que un eje mas pequeno tiene mas holgura para ensamblarse aunque este inclinado."
+    }
   }
 ]
