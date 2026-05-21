@@ -15,9 +15,9 @@ describe('StateStore', () => {
     await store.disconnect();
   });
 
-  it('loadState returns 15 rows for user adrian', async () => {
+  it('loadState returns 17 rows for user adrian', async () => {
     const rows = await store.loadState('adrian');
-    assert.equal(rows.length, 15);
+    assert.equal(rows.length, 17);
   });
 
   it('loadState row has required fields', async () => {
@@ -31,18 +31,29 @@ describe('StateStore', () => {
     assert.ok('unlocked' in row);
   });
 
-  it('nivel 1 cells are unlocked for all controls', async () => {
+  it('nivel 1 cells are unlocked for all geometric controls', async () => {
     const rows = await store.loadState('adrian');
-    const nivel1 = rows.filter(r => r.nivel === 1);
+    const geoControls = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+    const nivel1 = rows.filter(r => r.nivel === 1 && geoControls.includes(r.control));
     assert.equal(nivel1.length, 5);
     nivel1.forEach(r => assert.equal(r.unlocked, true));
   });
 
-  it('nivel 2 and 3 cells are locked initially', async () => {
+  it('Fundamentos L1 is unlocked and L2 is locked in DB', async () => {
     const rows = await store.loadState('adrian');
-    const locked = rows.filter(r => r.nivel > 1);
-    assert.equal(locked.length, 10);
-    locked.forEach(r => assert.equal(r.unlocked, false));
+    const fundL1 = rows.find(r => r.control === 'Fundamentos' && r.nivel === 1);
+    const fundL2 = rows.find(r => r.control === 'Fundamentos' && r.nivel === 2);
+    assert.ok(fundL1, 'Fundamentos L1 should exist in DB');
+    assert.equal(fundL1.unlocked, true);
+    assert.ok(fundL2, 'Fundamentos L2 should exist in DB');
+    assert.equal(fundL2.unlocked, false);
+  });
+
+  it('nivel 2 and 3 cells for geometric controls exist (10 rows)', async () => {
+    const rows = await store.loadState('adrian');
+    const geoControls = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+    const higher = rows.filter(r => r.nivel > 1 && geoControls.includes(r.control));
+    assert.equal(higher.length, 10);
   });
 
   it('saveState updates attempts and correct_streak', async () => {

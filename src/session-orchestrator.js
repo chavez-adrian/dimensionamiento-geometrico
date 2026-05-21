@@ -44,12 +44,28 @@ async function getSeenBankIds(control, nivel) {
   return rows.map(r => r.bank_id).filter(Boolean);
 }
 
+async function getSeenQuestions(userId, control, nivel) {
+  const { rows } = await pool.query(
+    `SELECT question FROM exercise_sessions
+     WHERE user_id = $1 AND control = $2 AND nivel = $3
+     ORDER BY answered_at DESC LIMIT 10`,
+    [userId, control, nivel]
+  ).catch(() => ({ rows: [] }));
+  return rows.map(r => r.question).filter(Boolean);
+}
+
 async function nextExercise(control, nivel) {
   let seenIds = [];
   if (nivel === 2) {
     seenIds = await getSeenBankIds(control, nivel);
   }
-  return generateForControl(control, nivel, { seenIds });
+  const seenQuestions = await getSeenQuestions(USER_ID, control, nivel);
+  const exercise = await generateForControl(control, nivel, { seenIds, seenQuestions });
+  await pool.query(
+    `INSERT INTO exercise_sessions (user_id, control, nivel, question) VALUES ($1, $2, $3, $4)`,
+    [USER_ID, control, nivel, exercise.question]
+  ).catch(() => {});
+  return exercise;
 }
 
 async function submitAnswer(exerciseId, answerIndex, exerciseData) {

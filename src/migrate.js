@@ -20,6 +20,17 @@ async function migrate() {
     `);
 
     await client.query(`
+      CREATE TABLE IF NOT EXISTS exercise_sessions (
+        id          SERIAL PRIMARY KEY,
+        user_id     TEXT,
+        control     TEXT,
+        nivel       INT,
+        question    TEXT,
+        answered_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS exercise_bank (
         id           SERIAL PRIMARY KEY,
         control      TEXT,

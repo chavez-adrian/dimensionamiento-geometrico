@@ -9,12 +9,11 @@ const {
 
 describe('KnowledgeStateEngine', () => {
   describe('getInitialState', () => {
-    it('returns state with nivel 1 unlocked for all controls', () => {
+    it('returns state with all 5 geometric controls present', () => {
       const state = getInitialState();
       const controls = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
       controls.forEach(control => {
         assert.ok(state[control], `missing control ${control}`);
-        assert.equal(state[control][1].unlocked, true, `nivel 1 should be unlocked for ${control}`);
       });
     });
 
@@ -127,6 +126,41 @@ describe('KnowledgeStateEngine', () => {
       const newState = processAnswer(state, 'Planicidad', 1, true);
       assert.equal(state['Planicidad'][1].attempts, 0);
       assert.equal(newState['Planicidad'][1].attempts, 1);
+    });
+  });
+
+  describe('Fundamentos', () => {
+    it('getInitialState has Fundamentos L1 unlocked', () => {
+      const state = getInitialState();
+      assert.ok(state['Fundamentos'], 'Fundamentos control should exist');
+      assert.equal(state['Fundamentos'][1].unlocked, true, 'Fundamentos L1 should be unlocked');
+    });
+
+    it('getInitialState has Fundamentos L2 locked', () => {
+      const state = getInitialState();
+      assert.equal(state['Fundamentos'][2].unlocked, false, 'Fundamentos L2 should be locked');
+    });
+
+    it('getInitialState has no Fundamentos L3', () => {
+      const state = getInitialState();
+      assert.equal(state['Fundamentos'][3], undefined, 'Fundamentos should not have L3');
+    });
+
+    it('getInitialState returns 17 total cells (Fundamentos x2 + 5 controls x3)', () => {
+      const state = getInitialState();
+      let count = 0;
+      Object.values(state).forEach(niveles => {
+        count += Object.keys(niveles).length;
+      });
+      assert.equal(count, 17);
+    });
+
+    it('getInitialState has 5 geometric controls L1 locked (Fundamentos is prerequisite)', () => {
+      const state = getInitialState();
+      const controls = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+      controls.forEach(control => {
+        assert.equal(state[control][1].unlocked, false, `${control} L1 should be locked until Fundamentos is mastered`);
+      });
     });
   });
 

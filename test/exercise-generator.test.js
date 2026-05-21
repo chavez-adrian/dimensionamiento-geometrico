@@ -43,6 +43,25 @@ describe('ExerciseGenerator', () => {
     }, { timeout: TIMEOUT });
   });
 
+  describe('Fundamentos nivel 1', () => {
+    it('returns exercise with required fields for Fundamentos nivel 1', async () => {
+      const ex = await generateForControl('Fundamentos', 1);
+      assertExerciseStructure(ex);
+    }, { timeout: TIMEOUT });
+
+    it('two calls for Fundamentos nivel 1 produce different questions (smoke)', async () => {
+      const ex1 = await generateForControl('Fundamentos', 1);
+      const ex2 = await generateForControl('Fundamentos', 1);
+      assert.notEqual(ex1.question, ex2.question, 'consecutive calls should produce different questions');
+    }, { timeout: TIMEOUT * 2 });
+
+    it('seenQuestions hint reduces repetition when passed', async () => {
+      const first = await generateForControl('Fundamentos', 1);
+      const second = await generateForControl('Fundamentos', 1, { seenQuestions: [first.question] });
+      assertExerciseStructure(second);
+    }, { timeout: TIMEOUT * 2 });
+  });
+
   describe('Nivel 2 structure', () => {
     it('returns exercise with required fields for Planicidad nivel 2', async () => {
       const ex = await generateForControl('Planicidad', 2);

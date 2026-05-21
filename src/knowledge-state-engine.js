@@ -4,6 +4,10 @@ const MASTERY_THRESHOLD = 4;
 
 function getInitialState() {
   const state = {};
+  state['Fundamentos'] = {
+    1: { attempts: 0, correct_streak: 0, mastered: false, unlocked: true },
+    2: { attempts: 0, correct_streak: 0, mastered: false, unlocked: false },
+  };
   CONTROLS.forEach(control => {
     state[control] = {};
     LEVELS.forEach(nivel => {
@@ -11,7 +15,7 @@ function getInitialState() {
         attempts: 0,
         correct_streak: 0,
         mastered: false,
-        unlocked: nivel === 1,
+        unlocked: false,
       };
     });
   });

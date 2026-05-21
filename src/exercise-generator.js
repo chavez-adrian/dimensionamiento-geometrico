@@ -19,10 +19,15 @@ function loadGlossary(control) {
   }
 }
 
-async function generateNivel1(control) {
+async function generateNivel1(control, opts) {
   const glossary = loadGlossary(control);
   const terminos = (glossary.terminos || []).join(', ');
   const definicion = glossary.definicion || '';
+  const seenQuestions = (opts && opts.seenQuestions) || [];
+
+  const seenHint = seenQuestions.length > 0
+    ? `\nNO formules preguntas similares a estas ya vistas: ${seenQuestions.join(' | ')}`
+    : '';
 
   const prompt = `Eres un experto en GD&T (Dimensionamiento y Tolerancias Geometricas) segun ASME Y14.5-2018.
 Genera UNA pregunta de opcion multiple de nivel vocabulario sobre el control geometrico: ${control}.
@@ -31,7 +36,7 @@ Definicion de ${control}: ${definicion}
 
 Terminos clave: ${terminos}
 
-La pregunta debe evaluar el conocimiento basico de vocabulario y definiciones.
+La pregunta debe evaluar el conocimiento basico de vocabulario y definiciones.${seenHint}
 Devuelve SOLO un objeto JSON valido con exactamente esta estructura:
 {
   "question": "texto de la pregunta",
@@ -157,7 +162,7 @@ async function generateNivel2(control, opts) {
 
 async function generateForControl(control, nivel, opts) {
   if (nivel === 1) {
-    return generateNivel1(control);
+    return generateNivel1(control, opts);
   }
   if (nivel === 2) {
     return generateNivel2(control, opts);
