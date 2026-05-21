@@ -34,8 +34,22 @@ async function saveCell(control, nivel, cell) {
   );
 }
 
+async function getSeenBankIds(control, nivel) {
+  const { rows } = await pool.query(
+    `SELECT DISTINCT (exercise->>'bank_id')::int AS bank_id
+     FROM exercise_sessions
+     WHERE user_id = $1 AND control = $2 AND nivel = $3 AND exercise->>'bank_id' IS NOT NULL`,
+    [USER_ID, control, nivel]
+  ).catch(() => ({ rows: [] }));
+  return rows.map(r => r.bank_id).filter(Boolean);
+}
+
 async function nextExercise(control, nivel) {
-  return generateForControl(control, nivel);
+  let seenIds = [];
+  if (nivel === 2) {
+    seenIds = await getSeenBankIds(control, nivel);
+  }
+  return generateForControl(control, nivel, { seenIds });
 }
 
 async function submitAnswer(exerciseId, answerIndex, exerciseData) {
