@@ -1,6 +1,6 @@
 [
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 2,
     "type": "multiple_choice",
     "anchor": "zona_tolerancia",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 2,
     "type": "multiple_choice",
     "anchor": "especificacion_correcta",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 2,
     "type": "multiple_choice",
     "anchor": "regla1_planicidad",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 2,
     "type": "multiple_choice",
     "anchor": "aplicaciones_planicidad",

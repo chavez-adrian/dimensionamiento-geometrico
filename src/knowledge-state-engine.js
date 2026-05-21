@@ -1,4 +1,4 @@
-const CONTROLS = ['Planitud', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
 const LEVELS = [1, 2, 3];
 const MASTERY_THRESHOLD = 4;
 

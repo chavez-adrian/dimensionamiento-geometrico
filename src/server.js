@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-const CONTROLS = ['Planitud', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
 const LEVELS = [
   { num: 1, label: 'Vocabulario' },
   { num: 2, label: 'Concepto Mecanico' },

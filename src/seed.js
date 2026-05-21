@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
-const CONTROLS = ['Planitud', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
 const LEVELS = [1, 2, 3];
 const USER_ID = 'adrian';
 

@@ -1,6 +1,6 @@
 [
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 3,
     "type": "open_answer",
     "anchor": "anchored",
@@ -10,7 +10,7 @@
     "content": {
       "scenario": "La cara de la matriz (die face) de un troquel de embutido profundo mide 250mm x 200mm. Esta superficie plana es donde apoya la lámina de acero al carbono calibre 26 (espesor ~0.4mm) durante la operación. Si esta cara no es suficientemente plana, la presión del sujetador de fleje (blankholder) no será uniforme, provocando arrugas o desgarres en la pieza embutida. La cara es rectificada en superficie plana. Pregunta: ¿qué control geométrico especificarías para esta cara de 250x200mm, qué datum requiere (si aplica), qué valor de tolerancia en mm es apropiado para manufactura de precisión media, y cuál es la justificación técnica?",
       "expected_spec": {
-        "control": "Planitud",
+        "control": "Planicidad",
         "datum_required": false,
         "datum": "ninguno",
         "tolerance_value_mm": "0.05-0.10",
@@ -34,7 +34,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 3,
     "type": "open_answer",
     "anchor": "anchored",
@@ -44,7 +44,7 @@
     "content": {
       "scenario": "El sujetador de fleje (blankholder) de un troquel de embutido tiene una superficie anular de contacto con la lámina. El diámetro exterior es 280mm y el interior 120mm, dejando un anillo de ~80mm de ancho. Esta superficie ejerce presión sobre la lámina calibre 26 para controlar el flujo de material hacia la cavidad de la matriz. La pieza se fabrica por fresado y rectificado. Si la superficie del blankholder tiene variación de planitud excesiva, habrá zonas con más presión que otras, generando flujo de material no uniforme y defectos en la pieza final. Pregunta: ¿qué control geométrico especificarías, requiere datum, qué tolerancia en mm y por qué?",
       "expected_spec": {
-        "control": "Planitud",
+        "control": "Planicidad",
         "datum_required": false,
         "datum": "ninguno",
         "tolerance_value_mm": "0.05-0.10",
@@ -68,7 +68,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 3,
     "type": "open_answer",
     "anchor": "anchored",
@@ -78,7 +78,7 @@
     "content": {
       "scenario": "La placa base inferior (lower die plate) de un troquel de embutido mide 350mm x 300mm x 40mm de espesor. Esta placa es el elemento de soporte sobre el que se ensamblan la matriz y los postes guía. Se monta directamente sobre la mesa de la prensa hidráulica. Si la placa base no es plana, la matriz ensam-blada sobre ella tampoco lo será, trasladando errores a toda la operación de embutido. La placa es fabricada por cepillado y rectificado. Pregunta: ¿qué control geométrico especificarías para la cara superior de esta placa, requiere datum, tolerancia apropiada en mm y justificación?",
       "expected_spec": {
-        "control": "Planitud",
+        "control": "Planicidad",
         "datum_required": false,
         "datum": "ninguno",
         "tolerance_value_mm": "0.05-0.15",
@@ -101,7 +101,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 3,
     "type": "open_answer",
     "anchor": "anchored",
@@ -111,7 +111,7 @@
     "content": {
       "scenario": "La cara del punzón (punch face) es la superficie frontal del punzón cilíndrico de Ø80mm que hace contacto inicial con la lámina calibre 26 y la empuja hacia la cavidad de la matriz. Durante el embutido, esta cara aplica fuerza axial sobre la lámina. Si la cara del punzón tiene variación de planitud, el contacto con la lámina no será simultáneo en toda el área, generando deformación no uniforme y posibles fracturas. El punzón es fabricado por torneado y rectificado de cara. Pregunta: ¿qué control geométrico aplica a esta cara circular de Ø80mm, necesita datum, qué tolerancia en mm y cuál es la razón técnica?",
       "expected_spec": {
-        "control": "Planitud",
+        "control": "Planicidad",
         "datum_required": false,
         "datum": "ninguno",
         "tolerance_value_mm": "0.02-0.08",
@@ -135,7 +135,7 @@
     }
   },
   {
-    "control": "Planitud",
+    "control": "Planicidad",
     "nivel": 3,
     "type": "open_answer",
     "anchor": "anchored",
@@ -145,7 +145,7 @@
     "content": {
       "scenario": "Un troquel de embutido tiene una placa intermedia (stripper plate) de 300mm x 250mm que sujeta la lámina al retroceder el punzón para desmontar la pieza embutida. Esta placa opera en contacto con la lámina procesada, y su planitud afecta la forma final de la pestaña de la pieza. Si la placa no es plana, marcará líneas o escalones en la superficie del producto. Es fabricada por fresado y rectificado. Pregunta: ¿qué control especificarías para la cara de contacto de esta placa de 300x250mm, requiere datum, valor de tolerancia en mm y justificación técnica?",
       "expected_spec": {
-        "control": "Planitud",
+        "control": "Planicidad",
         "datum_required": false,
         "datum": "ninguno",
         "tolerance_value_mm": "0.05-0.12",

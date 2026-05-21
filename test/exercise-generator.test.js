@@ -17,8 +17,8 @@ function assertExerciseStructure(ex) {
 
 describe('ExerciseGenerator', () => {
   describe('Nivel 1 structure', () => {
-    it('returns exercise with required fields for Planitud nivel 1', async () => {
-      const ex = await generateForControl('Planitud', 1);
+    it('returns exercise with required fields for Planicidad nivel 1', async () => {
+      const ex = await generateForControl('Planicidad', 1);
       assertExerciseStructure(ex);
     }, { timeout: TIMEOUT });
 
@@ -44,8 +44,8 @@ describe('ExerciseGenerator', () => {
   });
 
   describe('Nivel 2 structure', () => {
-    it('returns exercise with required fields for Planitud nivel 2', async () => {
-      const ex = await generateForControl('Planitud', 2);
+    it('returns exercise with required fields for Planicidad nivel 2', async () => {
+      const ex = await generateForControl('Planicidad', 2);
       assertExerciseStructure(ex);
     }, { timeout: TIMEOUT });
 
@@ -72,7 +72,7 @@ describe('ExerciseGenerator', () => {
     it('at least one dynamically generated nivel 2 exercise mentions embutido or lamina de acero', async () => {
       const exercises = [];
       for (let i = 0; i < 3; i++) {
-        const ex = await generateForControl('Planitud', 2, { forceDynamic: true });
+        const ex = await generateForControl('Planicidad', 2, { forceDynamic: true });
         exercises.push(ex);
       }
       const mentionsContext = exercises.some(ex => {

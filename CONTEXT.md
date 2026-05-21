@@ -7,7 +7,7 @@ Herramienta de aprendizaje adaptativo para que Adrián Chávez domine la especif
 ### Dominio de aprendizaje
 
 **Control Geométrico**:
-Una de las 5 características geométricas en alcance: Planitud, Paralelismo, Perpendicularidad, Posición, Cilindricidad.
+Una de las 5 características geométricas en alcance: Planicidad, Paralelismo, Perpendicularidad, Posición, Cilindricidad.
 _Evitar_: Característica GD&T, símbolo geométrico, tolerancia.
 
 **Celda de Conocimiento**:
