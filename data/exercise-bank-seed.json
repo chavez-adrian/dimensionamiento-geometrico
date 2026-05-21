@@ -1,0 +1,146 @@
+[
+  {
+    "control": "Planitud",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "zona_tolerancia",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La zona de tolerancia para el control de planicidad esta formada por...",
+      "options": [
+        "Dos cilindros concentricos",
+        "Dos circulos concentricos",
+        "Dos planos paralelos perfectos",
+        "Un plano liso"
+      ],
+      "correct_index": 2,
+      "explanation": "La zona de tolerancia de planicidad es tridimensional y esta formada por dos planos perfectos paralelos entre ellos. Todos los elementos de la superficie deben quedar dentro de estos dos planos. La distancia entre ellos define el valor de la tolerancia."
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "especificacion_correcta",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cual de las siguientes NO es una regla para la especificacion correcta de planicidad?",
+      "options": [
+        "No se requiere datum de referencia en la caja de control",
+        "La planicidad puede especificarse sobre geometrias cilindricas",
+        "El valor de tolerancia debe ser menor que la tolerancia de tamano",
+        "No se debe especificar modificador de condicion de material en superficies planas simples"
+      ],
+      "correct_index": 1,
+      "explanation": "La planicidad debe especificarse SOLO sobre geometrias NO cilindricas. Para superficies cilindricas se usa cilindricidad o redondez. Las demas opciones son reglas correctas para la especificacion de planicidad."
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "regla1_planicidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Cuando la Regla numero 1 aplica a un rasgo de tamano (FOS) formado por dos planos paralelos, que ocurre con la planicidad?",
+      "options": [
+        "La planicidad no esta controlada en absoluto",
+        "Se crea un control de planicidad directo en ambas superficies",
+        "Se crea un control de planicidad indirecto en ambas superficies",
+        "Solo la superficie superior queda controlada"
+      ],
+      "correct_index": 2,
+      "explanation": "Cuando la Regla numero 1 aplica a un FOS de dos planos paralelos (como una lengueta o ranura), automaticamente existe un control de planicidad INDIRECTO en ambas superficies. Es un efecto colateral de la regla de forma perfecta en MMC."
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "aplicaciones_planicidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "En cual de los siguientes casos es mas apropiado especificar una tolerancia de planicidad?",
+      "options": [
+        "Para controlar la posicion de un agujero",
+        "Para asegurar el sellado en una junta o empaque",
+        "Para controlar la concentricidad de un eje",
+        "Para especificar el acabado superficial"
+      ],
+      "correct_index": 1,
+      "explanation": "La planicidad se aplica tipicamente para: juntas o sellos (donde la superficie debe ser plana para garantizar el sello), acoplar partes (ensamble correcto) y mejorar el contacto con un plano datum. Es fundamental cuando la intercambiabilidad o funcion de la pieza depende de la planitud de la superficie."
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "definicion_cilindricidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La cilindricidad es la condicion donde...",
+      "options": [
+        "Cada seccion transversal circular esta dentro de dos circulos concentricos",
+        "Todos los puntos de la superficie estan equidistantes a un eje",
+        "Cada elemento linea longitudinal es una linea recta",
+        "La superficie esta dentro de dos planos paralelos"
+      ],
+      "correct_index": 1,
+      "explanation": "La cilindricidad es la condicion de una superficie de revolucion donde TODOS los puntos de la superficie estan equidistantes a un eje comun. Esto es diferente de la redondez (que solo controla secciones transversales individuales) y de la rectitud (que controla elementos linea individuales)."
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "zona_tolerancia_cilindricidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La zona de tolerancia para cilindricidad esta definida por...",
+      "options": [
+        "Dos planos paralelos separados por el valor de tolerancia",
+        "Dos circulos concentricos en una seccion transversal",
+        "Dos cilindros concentricos cuya distancia radial es el valor de tolerancia",
+        "Un cilindro cuyo diametro es el valor de tolerancia"
+      ],
+      "correct_index": 2,
+      "explanation": "La zona de tolerancia de cilindricidad esta definida por dos cilindros concentricos. Todos los puntos de la superficie cilindrica deben quedar entre estos dos cilindros. La distancia radial entre ellos (no el diametro) es el valor de la tolerancia especificada."
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "cilindricidad_vs_redondez",
+    "source": "curso_pdf",
+    "content": {
+      "question": "La principal diferencia entre cilindricidad y redondez es que...",
+      "options": [
+        "La cilindricidad usa datum de referencia y la redondez no",
+        "La redondez controla toda la superficie y la cilindricidad solo secciones",
+        "La cilindricidad controla simultaneamente elementos circulares y longitudinales, la redondez solo circulares",
+        "La cilindricidad puede usar modificadores MMC y la redondez no"
+      ],
+      "correct_index": 2,
+      "explanation": "La cilindricidad aplica SIMULTANEAMENTE a los elementos circulares (como redondez) y a los elementos longitudinales (como rectitud) de toda la superficie cilindrica. La redondez solo controla cada seccion transversal circular de forma independiente. Por eso la cilindricidad es un control mas completo y restrictivo."
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 2,
+    "type": "multiple_choice",
+    "anchor": "especificacion_cilindricidad",
+    "source": "curso_pdf",
+    "content": {
+      "question": "Para la especificacion correcta de cilindricidad, cual modificador NO debe usarse?",
+      "options": [
+        "Simbolo de diametro en la caja de control",
+        "Modificador de condicion de material (MMC o LMC)",
+        "Tolerancia por unidad de longitud",
+        "Simbolo de estado libre"
+      ],
+      "correct_index": 1,
+      "explanation": "La cilindricidad NO debe llevar modificador de condicion de material (ni MMC ni LMC). Tampoco requiere datum de referencia. La tolerancia de cilindricidad aplica independientemente del tamano (RFS por defecto). Si se aplica junto con principio de independencia o variacion en estado libre, la tolerancia puede exceder la de tamano."
+    }
+  }
+]

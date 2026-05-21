@@ -1,0 +1,58 @@
+{
+  "Planitud": {
+    "terminos": [
+      "planicidad",
+      "tolerancia de forma",
+      "zona de tolerancia",
+      "planos paralelos",
+      "superficie plana",
+      "FOS",
+      "plano de simetria",
+      "RFS",
+      "MMC",
+      "variacion por unidad de area",
+      "plano medio derivado",
+      "control de forma",
+      "regla numero 1"
+    ],
+    "definicion": "La planicidad es la condicion de una superficie que tiene todos sus elementos dentro de un plano. Define que tanto puede una superficie plana variar desde la forma perfecta del plano. La zona de tolerancia es tridimensional formada por dos planos perfectos paralelos entre ellos, entre los cuales deben estar todos los elementos de la superficie.",
+    "reglas": [
+      "No se requiere datum de referencia en la caja de control de rasgo.",
+      "No se debe especificar un modificador de condicion de material a menos que se trate de un plano de simetria indicado en una dimension de FOS.",
+      "La planicidad debe especificarse sobre geometrias no cilindricas.",
+      "Cuando se aplique planicidad simultaneamente con alguna otra tolerancia geometrica, el valor de la tolerancia de planicidad debera ser menor que cualquiera de las otras.",
+      "El valor de la tolerancia cuando se aplica a una superficie asociada a una dimension de tamano debera ser menor que la tolerancia de tamano.",
+      "Se aplica donde la intercambiabilidad o funcion de la pieza sean criticas y no sea suficiente con las tolerancias de tamano.",
+      "La regla numero 1 aplicada a un FOS de dos planos paralelos crea control de planicidad indirecto en ambas superficies.",
+      "Es posible especificar variaciones por unidad de area para evitar cambios abruptos en la planicidad.",
+      "Aplicaciones tipicas: juntas o sellos, acoplar partes, mejorar el contacto con un plano datum."
+    ]
+  },
+  "Cilindricidad": {
+    "terminos": [
+      "cilindricidad",
+      "tolerancia de forma",
+      "zona de tolerancia",
+      "cilindros concentricos",
+      "superficie de revolucion",
+      "eje",
+      "elementos circulares",
+      "elementos longitudinales",
+      "redondez",
+      "rectitud",
+      "principio de independencia",
+      "variacion en estado libre",
+      "control de forma"
+    ],
+    "definicion": "La cilindricidad es la condicion de una superficie de revolucion donde todos los puntos de la superficie estan equidistantes a un eje. La zona de tolerancia esta definida por dos cilindros concentricos entre los cuales se encuentran todos los puntos de la superficie. La distancia entre estos dos cilindros es el tamano de la zona de tolerancia.",
+    "reglas": [
+      "La tolerancia aplica simultaneamente tanto a los elementos circulares como a los longitudinales de la superficie.",
+      "La tolerancia debe ser menor que la tolerancia de tamano excepto a las partes sujetas al principio de independencia o a la variacion en estado libre.",
+      "No se requiere datum de referencia en la caja de control de rasgo.",
+      "No se debe aplicar modificador de condicion de material.",
+      "La cilindricidad controla redondez, rectitud y conicidad al mismo tiempo.",
+      "La superficie cilindrica debera estar contenida dentro de dos cilindros concentricos, uno con el radio del valor de tolerancia mayor que el otro.",
+      "Se aplica a rasgos diametrales: cilindros externos e internos."
+    ]
+  }
+}
