@@ -6,12 +6,16 @@ Herramienta de aprendizaje adaptativo para que Adrián Chávez domine la especif
 
 ### Dominio de aprendizaje
 
+**Fundamentos**:
+Bloque prerequisito que cubre los conceptos transversales de GD&T necesarios para entender cualquier Control Geométrico. Abarca el contenido de los Módulos 1 y 2 del curso: FOS, MMC/LMC/RFS, Regla #1 (Principio de Envoltura), Regla #2, Caja de Control de Rasgo, Datum, Bonus Tolerance, condiciones de frontera (MMB/LMB/RMB), entre otros. Tiene 2 Niveles (Vocabulario y Concepto Mecánico) — no tiene Nivel 3 (Criterio de Decisión). El estudiante debe dominar Fundamentos antes de acceder a cualquier Control Geométrico.
+_Evitar_: Introducción, prerrequisitos, conceptos básicos.
+
 **Control Geométrico**:
 Una de las 5 características geométricas en alcance: Planicidad, Paralelismo, Perpendicularidad, Posición, Cilindricidad.
 _Evitar_: Característica GD&T, símbolo geométrico, tolerancia.
 
 **Celda de Conocimiento**:
-Par (Control Geométrico, Nivel) que representa la unidad atómica de seguimiento del progreso del estudiante. Hay 15 celdas en total (5 controles × 3 niveles).
+Par (tema, Nivel) que representa la unidad atómica de seguimiento del progreso del estudiante. Hay 17 celdas en total: 2 de Fundamentos (Fundamentos × 2 niveles) + 15 de controles (5 controles × 3 niveles).
 _Evitar_: Módulo, unidad, tema.
 
 **Nivel**:
@@ -58,6 +62,22 @@ _Evitar_: Corrección automática, calificación IA, revisión.
 **Troquel de Embutido**:
 Herramental de embutido profundo (deep drawing die) para lámina de acero al carbono calibre 26. Contexto de manufactura que ancla todos los Ejercicios de Nivel 3.
 _Evitar_: Herramental, molde, matriz (cuando se usa como sinónimo del troquel completo).
+
+### Terminología canónica (decisiones QA)
+
+Los PDFs del curso son internamente inconsistentes en algunos términos. El sistema usa las siguientes formas canónicas:
+
+| Inglés (ASME) | Español canónico del sistema | Variante del curso no usar |
+|---|---|---|
+| Flatness | **Planicidad** | "Planitud" |
+| Cylindricity | **Cilindricidad** | "Cilindridad" (tabla M2) |
+| Circularity | **Circularidad** | "Redondez" (título M3) |
+| Circular Runout | **Cabeceo Circular** | "Cabeceo Radial" (M7) |
+| Total Runout | **Cabeceo Total** | — |
+| Full Indicator Movement | **FIM** | MIC u otros |
+| Maximum Material Condition | **Condición de Máximo Material** | "Material Máximo" |
+
+**Concentricidad y Simetría**: Eliminadas como controles independientes en ASME Y14.5-2018. No forman parte del sistema. Se mencionan únicamente como notas históricas dentro de Fundamentos para que el estudiante entienda por qué no aparecen en planos modernos.
 
 ## Flagged ambiguities
 
