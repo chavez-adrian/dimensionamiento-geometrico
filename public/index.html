@@ -12,6 +12,17 @@
 
     /* GRID VIEW */
     #grid-view { max-width: 860px; margin: 0 auto; }
+
+    /* FUNDAMENTOS SECTION */
+    .fundamentos-section { margin-bottom: 1.5rem; }
+    .fundamentos-header { font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; padding-left: 0.25rem; }
+    .fundamentos-row {
+      display: grid;
+      grid-template-columns: 160px repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    .fundamentos-row .row-label { color: #94a3b8; }
+
     .levels-header {
       display: grid;
       grid-template-columns: 160px repeat(3, 1fr);
@@ -45,19 +56,19 @@
     }
     .cell .nivel-label { font-size: 0.65rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.04em; }
     .cell .status { font-size: 0.7rem; font-weight: 600; margin-top: 0.2rem; }
-    .cell.locked { background: #1e293b; border: 1px solid #334155; color: #475569; cursor: not-allowed; }
+    .cell.locked { background: #bdbdbd; border: 1px solid #9e9e9e; color: #424242; cursor: not-allowed; }
     .cell.unlocked { background: #1e3a5f; border: 1px solid #2563eb; color: #93c5fd; cursor: pointer; }
     .cell.unlocked:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
     .cell.in-progress { background: #451a03; border: 1px solid #d97706; color: #fcd34d; cursor: pointer; }
     .cell.in-progress:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217,119,6,0.3); }
-    .cell.mastered { background: #14532d; border: 1px solid #16a34a; color: #86efac; }
+    .cell.mastered { background: #4caf50; border: 1px solid #388e3c; color: #fff; }
     .legend { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; font-size: 0.75rem; flex-wrap: wrap; }
     .legend-item { display: flex; align-items: center; gap: 0.4rem; }
     .dot { width: 12px; height: 12px; border-radius: 50%; }
-    .dot.locked { background: #334155; }
+    .dot.locked { background: #bdbdbd; }
     .dot.unlocked { background: #2563eb; }
     .dot.in-progress { background: #d97706; }
-    .dot.mastered { background: #16a34a; }
+    .dot.mastered { background: #4caf50; }
 
     /* EXERCISE VIEW */
     #exercise-view { display: none; max-width: 640px; margin: 0 auto; }
@@ -132,6 +143,14 @@
 
   <!-- GRID VIEW -->
   <div id="grid-view">
+    <div class="fundamentos-section">
+      <div class="fundamentos-header">Fundamentos (Prerequisito)</div>
+      <div class="fundamentos-row">
+        <div class="row-label">Fundamentos</div>
+        <div id="fund-cell-1" class="cell locked"></div>
+        <div id="fund-cell-2" class="cell locked"></div>
+      </div>
+    </div>
     <div class="levels-header">
       <div></div>
       <div>Vocabulario</div>
@@ -194,7 +213,56 @@
       return stateMap[key] || { unlocked: false, mastered: false, attempts: 0, correct_streak: 0 };
     }
 
+    function buildCell(div, cellData, levelLabel, control, levelNum) {
+      div.innerHTML = '';
+      let cls = 'cell ';
+      if (!cellData.unlocked) {
+        cls += 'locked';
+      } else if (cellData.mastered) {
+        cls += 'mastered';
+      } else if (cellData.attempts > 0) {
+        cls += 'in-progress';
+      } else {
+        cls += 'unlocked';
+      }
+      div.className = cls;
+
+      const levelSpan = document.createElement('span');
+      levelSpan.className = 'nivel-label';
+      levelSpan.textContent = levelLabel;
+      div.appendChild(levelSpan);
+
+      const statusSpan = document.createElement('span');
+      statusSpan.className = 'status';
+      if (!cellData.unlocked) {
+        statusSpan.textContent = '🔒';
+      } else if (cellData.mastered) {
+        statusSpan.textContent = '✓';
+      } else {
+        statusSpan.textContent = cellData.correct_streak;
+      }
+      div.appendChild(statusSpan);
+
+      div.onclick = null;
+      if (cellData.unlocked && !cellData.mastered && control !== null) {
+        div.onclick = () => startExercise(control, levelNum);
+      }
+    }
+
+    function renderFundamentos() {
+      const fundLevels = [
+        { num: 1, label: 'Vocabulario' },
+        { num: 2, label: 'Concepto Mecanico' },
+      ];
+      fundLevels.forEach(level => {
+        const div = document.getElementById(`fund-cell-${level.num}`);
+        const cellData = getCellState('Fundamentos', level.num);
+        buildCell(div, cellData, level.label, 'Fundamentos', level.num);
+      });
+    }
+
     function renderGrid() {
+      renderFundamentos();
       const container = document.getElementById('grid-rows');
       container.innerHTML = '';
       CONTROLS.forEach(control => {
@@ -206,31 +274,9 @@
         row.appendChild(label);
 
         LEVELS.forEach(level => {
-          const cell = getCellState(control, level.num);
+          const cellData = getCellState(control, level.num);
           const div = document.createElement('div');
-          let cls = 'cell ';
-          if (cell.mastered) cls += 'mastered';
-          else if (cell.unlocked && cell.attempts > 0) cls += 'in-progress';
-          else if (cell.unlocked) cls += 'unlocked';
-          else cls += 'locked';
-          div.className = cls;
-
-          const levelSpan = document.createElement('span');
-          levelSpan.className = 'nivel-label';
-          levelSpan.textContent = level.label;
-          div.appendChild(levelSpan);
-
-          const statusSpan = document.createElement('span');
-          statusSpan.className = 'status';
-          if (cell.mastered) statusSpan.textContent = 'Dominado';
-          else if (cell.unlocked && cell.attempts > 0) statusSpan.textContent = `Racha: ${cell.correct_streak}/4`;
-          else if (cell.unlocked) statusSpan.textContent = 'Disponible';
-          else statusSpan.textContent = 'Bloqueado';
-          div.appendChild(statusSpan);
-
-          if (cell.unlocked && !cell.mastered) {
-            div.onclick = () => startExercise(control, level.num);
-          }
+          buildCell(div, cellData, level.label, control, level.num);
           row.appendChild(div);
         });
         container.appendChild(row);
