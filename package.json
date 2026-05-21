@@ -1,0 +1,32 @@
+{
+  "name": "dimensionamiento-geometrico",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/**/*.test.js",
+    "migrate": "node src/migrate.js",
+    "seed": "node src/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chavez-adrian/dimensionamiento-geometrico.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/chavez-adrian/dimensionamiento-geometrico/issues"
+  },
+  "homepage": "https://github.com/chavez-adrian/dimensionamiento-geometrico#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.21.0"
+  }
+}
