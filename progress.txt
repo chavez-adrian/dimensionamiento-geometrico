@@ -32,13 +32,24 @@
 - test/exercise-generator.test.js: 11/11 GREEN (requieren API key + DB)
 - Total: 36 tests GREEN
 
+**Issue #6 — COMPLETADO** (Banco de Ejercicios Nivel 3 — Criterio de Decisión)
+- data/exercise-bank-nivel3.json: 22 escenarios open_answer nivel=3 source=cidesi active=false
+  - Planitud: 5 escenarios (cara matriz, blankholder, placa base, cara punzón, stripper plate)
+  - Paralelismo: 4 escenarios (blankholder vs die face, placa base superior, buje guía, cavidad vs cara montaje)
+  - Perpendicularidad: 4 escenarios (columna guía, punzón en portapunzón, buje interior, pared cavidad)
+  - Posición: 4 escenarios (barrenos columna guía, barrenos buje, barreno central M20, pines expulsores)
+  - Cilindricidad: 5 escenarios (columna guía, barreno buje, punzón exterior, barreno alojamiento, nose radius)
+- scripts/seed-nivel3.js: lee exercise-bank-nivel3.json e inserta con active=FALSE
+- scripts/verify-nivel3.js: verifica registros en Neon
+- Neon DB: 22 filas nivel=3 insertadas, todas active=false (esperando validación CIDESI)
+- package.json: script seed:nivel3 agregado
+
 ### Issues pendientes
-- Issue #6: HITL — no implementar
-- Issue #7: BLOQUEADO por #6
+- Issue #7: BLOQUEADO (dependía de #6, ahora desbloqueado)
 
 ### Infraestructura activa
 - Neon DB: gdt_learning
   - knowledge_state: 15 filas adrian (5 controles x 3 niveles)
-  - exercise_bank: 20 filas total (8 Planitud/Cilindricidad nivel 2 + 12 nuevas Paralelismo/Perpendicularidad/Posicion nivel 2)
+  - exercise_bank: 42 filas total (20 nivel 1-2 + 22 nivel 3 active=false pendientes validacion CIDESI)
 - Render: auto-deploy desde master en GitHub
 - ANTHROPIC_API_KEY: en .env local y en Render env vars

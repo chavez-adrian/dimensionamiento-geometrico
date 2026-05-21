@@ -1,0 +1,751 @@
+[
+  {
+    "control": "Planitud",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La cara de la matriz (die face) de un troquel de embutido profundo mide 250mm x 200mm. Esta superficie plana es donde apoya la lámina de acero al carbono calibre 26 (espesor ~0.4mm) durante la operación. Si esta cara no es suficientemente plana, la presión del sujetador de fleje (blankholder) no será uniforme, provocando arrugas o desgarres en la pieza embutida. La cara es rectificada en superficie plana. Pregunta: ¿qué control geométrico especificarías para esta cara de 250x200mm, qué datum requiere (si aplica), qué valor de tolerancia en mm es apropiado para manufactura de precisión media, y cuál es la justificación técnica?",
+      "expected_spec": {
+        "control": "Planitud",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "La cara de la matriz es una superficie de referencia primaria para el flujo de lámina. Con 0.05-0.10mm se garantiza presión uniforme del blankholder en toda el área de 250x200mm sin requerir rectificado de ultra-precisión. Un valor menor (0.02mm) sería innecesario para calibre 26; uno mayor (0.20mm) provocaría variación de presión suficiente para generar arrugas.",
+        "justification_keywords": [
+          "planitud",
+          "sin datum",
+          "presión uniforme",
+          "blankholder",
+          "flujo de material",
+          "arrugas",
+          "rectificado"
+        ],
+        "common_mistakes": [
+          "Especificar un datum de referencia (planitud es control de forma, no necesita datum)",
+          "Usar paralelismo en vez de planitud cuando no hay referencia externa",
+          "Poner tolerancia mayor a 0.15mm que compromete uniformidad de presión",
+          "Confundir planitud con rectitud (flatness vs. straightness)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El sujetador de fleje (blankholder) de un troquel de embutido tiene una superficie anular de contacto con la lámina. El diámetro exterior es 280mm y el interior 120mm, dejando un anillo de ~80mm de ancho. Esta superficie ejerce presión sobre la lámina calibre 26 para controlar el flujo de material hacia la cavidad de la matriz. La pieza se fabrica por fresado y rectificado. Si la superficie del blankholder tiene variación de planitud excesiva, habrá zonas con más presión que otras, generando flujo de material no uniforme y defectos en la pieza final. Pregunta: ¿qué control geométrico especificarías, requiere datum, qué tolerancia en mm y por qué?",
+      "expected_spec": {
+        "control": "Planitud",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "La superficie anular del blankholder debe ser plana para aplicar presión uniforme sobre los 80mm de ancho. Con 0.05-0.10mm se asegura que ninguna zona del anillo ejerza presión significativamente diferente. El control es de forma (planitud) independiente de cualquier datum porque lo que importa es la forma intrínseca de esa superficie.",
+        "justification_keywords": [
+          "planitud",
+          "sin datum",
+          "presión uniforme",
+          "flujo de material",
+          "superficie anular",
+          "blankholder",
+          "control de forma"
+        ],
+        "common_mistakes": [
+          "Agregar datum cuando planitud no lo requiere",
+          "Usar perpendicularidad pensando en la cara perpendicular al eje del punzón",
+          "No relacionar la tolerancia con la función de control de flujo de lámina",
+          "Poner valor excesivamente ajustado (0.01mm) sin justificación para manufactura media"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La placa base inferior (lower die plate) de un troquel de embutido mide 350mm x 300mm x 40mm de espesor. Esta placa es el elemento de soporte sobre el que se ensamblan la matriz y los postes guía. Se monta directamente sobre la mesa de la prensa hidráulica. Si la placa base no es plana, la matriz ensam-blada sobre ella tampoco lo será, trasladando errores a toda la operación de embutido. La placa es fabricada por cepillado y rectificado. Pregunta: ¿qué control geométrico especificarías para la cara superior de esta placa, requiere datum, tolerancia apropiada en mm y justificación?",
+      "expected_spec": {
+        "control": "Planitud",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.05-0.15",
+        "tolerance_rationale": "La cara superior de la placa base es la referencia de montaje para la matriz y los postes. Con 0.05-0.15mm se garantiza que los componentes ensamblados sobre ella no hereden errores de forma significativos. Al ser placa de soporte (no la superficie de trabajo directa), 0.10mm es razonable; más ajustado sería costoso sin beneficio funcional para calibre 26.",
+        "justification_keywords": [
+          "planitud",
+          "sin datum",
+          "placa base",
+          "superficie de montaje",
+          "errores acumulados",
+          "soporte de ensamble"
+        ],
+        "common_mistakes": [
+          "Usar paralelismo sin tener una segunda superficie de referencia definida",
+          "Especificar datum innecesario para un control de forma",
+          "No considerar que los errores de planitud de la placa base se acumulan con los de los componentes montados",
+          "Usar tolerancia demasiado estricta (0.01mm) para una placa de soporte"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La cara del punzón (punch face) es la superficie frontal del punzón cilíndrico de Ø80mm que hace contacto inicial con la lámina calibre 26 y la empuja hacia la cavidad de la matriz. Durante el embutido, esta cara aplica fuerza axial sobre la lámina. Si la cara del punzón tiene variación de planitud, el contacto con la lámina no será simultáneo en toda el área, generando deformación no uniforme y posibles fracturas. El punzón es fabricado por torneado y rectificado de cara. Pregunta: ¿qué control geométrico aplica a esta cara circular de Ø80mm, necesita datum, qué tolerancia en mm y cuál es la razón técnica?",
+      "expected_spec": {
+        "control": "Planitud",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.02-0.08",
+        "tolerance_rationale": "La cara del punzón de Ø80mm transmite la fuerza de embutido directamente a la lámina. Un valor de 0.02-0.08mm asegura contacto uniforme sobre toda el área circular. El rango es más ajustado que en superficies grandes porque cualquier desviación en el punto de contacto inicial se amplifica durante el embutido. El control es de forma pura (no necesita datum).",
+        "justification_keywords": [
+          "planitud",
+          "sin datum",
+          "cara del punzón",
+          "contacto uniforme",
+          "fuerza axial",
+          "deformación uniforme",
+          "fractura"
+        ],
+        "common_mistakes": [
+          "Confundir la cara plana con el cuerpo cilíndrico del punzón (cara usa planitud, cuerpo usa cilindricidad)",
+          "Agregar datum cuando es control de forma",
+          "Usar tolerancia demasiado laxa (0.20mm) ignorando que el área es pequeña y concentrada",
+          "Especificar perpendicularidad de la cara respecto al eje en vez de planitud de la cara misma"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Planitud",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Un troquel de embutido tiene una placa intermedia (stripper plate) de 300mm x 250mm que sujeta la lámina al retroceder el punzón para desmontar la pieza embutida. Esta placa opera en contacto con la lámina procesada, y su planitud afecta la forma final de la pestaña de la pieza. Si la placa no es plana, marcará líneas o escalones en la superficie del producto. Es fabricada por fresado y rectificado. Pregunta: ¿qué control especificarías para la cara de contacto de esta placa de 300x250mm, requiere datum, valor de tolerancia en mm y justificación técnica?",
+      "expected_spec": {
+        "control": "Planitud",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.05-0.12",
+        "tolerance_rationale": "La stripper plate de 300x250mm contacta la pestaña de la pieza embutida al desmontar. Con 0.05-0.12mm se evita que la placa marque irregularidades en la lámina calibre 26. El valor es moderado porque no es la superficie de embutido primaria sino de desmontaje, pero sí afecta la calidad superficial del producto terminado.",
+        "justification_keywords": [
+          "planitud",
+          "sin datum",
+          "stripper plate",
+          "desmontaje",
+          "marcas en lámina",
+          "calidad superficial",
+          "pestaña"
+        ],
+        "common_mistakes": [
+          "No identificar la función de desmontaje como crítica para la calidad del producto",
+          "Agregar datum de referencia innecesario",
+          "Usar tolerancia excesivamente laxa (>0.20mm) sin considerar marcado en lámina delgada calibre 26",
+          "Confundir con paralelismo respecto a la cara opuesta"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La cara superior del sujetador de fleje (blankholder) de un troquel de embutido debe ser paralela a la cara de la matriz (die face) que sirve como datum. La distancia nominal entre ambas caras es 0.4mm (equivalente al espesor de la lámina calibre 26). Si el blankholder no es paralelo a la cara de la matriz, el espacio entre ellos variará alrededor del perímetro: donde el espacio sea mayor, la lámina tendrá menor restricción y formará arrugas; donde sea menor, la lámina se fracturará por exceso de presión. El blankholder mide 280mm x 230mm. Pregunta: ¿qué control geométrico especificarías, cuál es el datum, qué valor de tolerancia en mm y por qué?",
+      "expected_spec": {
+        "control": "Paralelismo",
+        "datum_required": true,
+        "datum": "cara de la matriz (die face) como Datum A",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "Con un espacio funcional de 0.4mm entre blankholder y die face, una tolerancia de paralelismo de 0.05-0.10mm garantiza que el espacio real varía entre 0.30-0.50mm en el peor caso, manteniendo presión suficiente sin fractura. Una tolerancia mayor (>0.15mm) podría crear zonas de espacio negativo o excesivo respecto al espesor de la lámina.",
+        "justification_keywords": [
+          "paralelismo",
+          "datum cara de la matriz",
+          "espacio uniforme",
+          "presión uniforme",
+          "arrugas",
+          "fractura",
+          "espesor de lámina"
+        ],
+        "common_mistakes": [
+          "Usar planitud en lugar de paralelismo (planitud no controla orientación respecto a otra superficie)",
+          "No especificar datum de referencia para paralelismo",
+          "No relacionar la tolerancia con el espesor de la lámina (0.4mm)",
+          "Invertir el datum (poner el blankholder como datum en vez de la cara de la matriz que es la superficie fija)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La placa base superior (upper die plate) de un troquel de embutido tiene dos caras planas paralelas: la cara inferior (que porta el blankholder y la matriz superior) y la cara superior (que se conecta al ariete de la prensa). La cara inferior es el Datum A. Ambas caras miden 350mm x 300mm y la placa tiene 50mm de espesor. Si las caras no son paralelas entre sí, la fuerza de la prensa se transmitirá en un ángulo no perpendicular a la lámina, generando embutido asimétrico. Pregunta: ¿qué control geométrico especificarías para la cara superior respecto al Datum A (cara inferior), qué tolerancia en mm y cuál es la razón?",
+      "expected_spec": {
+        "control": "Paralelismo",
+        "datum_required": true,
+        "datum": "cara inferior de la placa superior como Datum A",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "Para una placa de 350x300mm con 50mm de espesor, el paralelismo de 0.05-0.10mm entre caras garantiza que la fuerza de la prensa se transmita sin introducir un momento angular significativo. Una variación mayor afectaría el paralelismo de toda la operación de embutido acumulando error con las tolerancias de los demás componentes.",
+        "justification_keywords": [
+          "paralelismo",
+          "datum cara inferior",
+          "transmisión de fuerza",
+          "embutido simétrico",
+          "acumulación de errores",
+          "placa base"
+        ],
+        "common_mistakes": [
+          "Usar planitud en vez de paralelismo (se necesita referencia entre las dos caras)",
+          "No nombrar el datum correctamente",
+          "No considerar la acumulación de errores de paralelismo con otros componentes",
+          "Usar tolerancia muy laxa (0.30mm) para una placa de transmisión de fuerza"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Un troquel de embutido tiene un conjunto de cuatro bujes guía (guide bushings) alojados en la placa base superior. Los bujes son cilíndricos (Ø32mm exterior) y se insertan en barrenos con ajuste de prensa. La cara frontal de cada buje debe ser paralela a la cara de la placa base superior (Datum A) para que las columnas guía entren centradas y sin carga lateral. Si la cara del buje no es paralela, la columna guía entra en ángulo generando desgaste prematuro tanto en el buje como en la columna. Pregunta: ¿qué control especificarías para la cara frontal del buje guía respecto al Datum A, qué valor de tolerancia y por qué?",
+      "expected_spec": {
+        "control": "Paralelismo",
+        "datum_required": true,
+        "datum": "cara de la placa base superior como Datum A",
+        "tolerance_value_mm": "0.05-0.08",
+        "tolerance_rationale": "La cara frontal del buje de Ø32mm actúa como el plano de entrada de la columna guía. Con 0.05-0.08mm de paralelismo respecto a la placa se asegura que la columna entra coaxialmente sin carga lateral. Para un diámetro de 32mm, este rango representa menos del 0.25% del diámetro, suficiente para evitar desgaste sin requerir mecanizado de precisión alta.",
+        "justification_keywords": [
+          "paralelismo",
+          "datum placa base",
+          "buje guía",
+          "columna guía",
+          "carga lateral",
+          "desgaste",
+          "entrada de columna"
+        ],
+        "common_mistakes": [
+          "Usar perpendicularidad en vez de paralelismo (la cara del buje debe ser paralela a la placa, no perpendicular)",
+          "No especificar datum",
+          "Confundir la cara del buje con el diámetro interior del buje (que requeriría cilindricidad o posición)",
+          "Usar tolerancia muy laxa ignorando el efecto de carga lateral en el desgaste"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Paralelismo",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La cara de trabajo de la matriz (die cavity face) de un troquel de embutido y la cara inferior de la placa base inferior deben ser paralelas. La cara de la cavidad mide 200mm x 160mm y la cara inferior de la placa base es el Datum A (superficie de montaje en la mesa de prensa). El espesor de la placa base es 40mm. Si la cara de trabajo de la matriz no es paralela a la cara de montaje, la pieza embutida tendrá paredes de espesor no uniforme porque la cavidad no estará paralela al movimiento del punzón. Pregunta: ¿qué control, datum, tolerancia en mm y justificación?",
+      "expected_spec": {
+        "control": "Paralelismo",
+        "datum_required": true,
+        "datum": "cara inferior de la placa base (superficie de montaje en prensa) como Datum A",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "La paralelismo entre la cara de cavidad y la cara de montaje garantiza que la cavidad está orientada correctamente respecto al movimiento vertical del punzón (que es perpendicular a la mesa de prensa). Con 0.05-0.10mm en 200mm se evita que la pieza embutida tenga variación de pared perceptible. El datum A es la cara de montaje porque es la referencia primaria del troquel en la prensa.",
+        "justification_keywords": [
+          "paralelismo",
+          "datum cara de montaje",
+          "cavidad de la matriz",
+          "espesor de pared uniforme",
+          "movimiento del punzón",
+          "orientación de cavidad"
+        ],
+        "common_mistakes": [
+          "No identificar correctamente cuál superficie es el datum (la cara de montaje en prensa es la referencia primaria)",
+          "Usar planitud en vez de paralelismo",
+          "No conectar el control de paralelismo con la uniformidad de espesor de la pieza embutida",
+          "Usar la cara de cavidad como datum en vez de la cara de montaje"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Una columna guía (guide post) cilíndrica de Ø25mm x 200mm de longitud está prensada en la placa base inferior de un troquel de embutido. La columna guía el movimiento relativo de las placas superior e inferior durante el embutido. La cara de la placa base inferior es el Datum A. Si la columna no es perpendicular a la placa base, durante el recorrido de embutido (stroke de ~60mm) la placa superior se desviará lateralmente, desalineando el punzón respecto a la cavidad de la matriz y generando embutido excéntrico o fractura de la lámina. Pregunta: ¿qué control geométrico especificarías para el eje de la columna guía respecto al Datum A, qué tolerancia en mm y cuál es la justificación?",
+      "expected_spec": {
+        "control": "Perpendicularidad",
+        "datum_required": true,
+        "datum": "cara de la placa base inferior como Datum A",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "Para una columna de 200mm de longitud con stroke de 60mm, la perpendicularidad de 0.05-0.10mm en zona de tolerancia cilíndrica (diámetro) controla la desviación lateral máxima en el punto de máxima extensión. A 200mm, una tolerancia de 0.10mm representa un ángulo de ~0.029 grados, suficiente para evitar carga lateral significativa en los bujes. Tolerancias más laxas (>0.15mm) generarían desgaste prematuro de bujes y columnas.",
+        "justification_keywords": [
+          "perpendicularidad",
+          "datum placa base",
+          "columna guía",
+          "zona cilíndrica",
+          "desviación lateral",
+          "alineación punzón-matriz",
+          "desgaste de bujes"
+        ],
+        "common_mistakes": [
+          "Usar planitud o paralelismo en vez de perpendicularidad (la relación es a 90 grados)",
+          "No especificar el datum de referencia",
+          "Aplicar zona de tolerancia entre dos planos en vez de zona cilíndrica (Ø) para un eje",
+          "No considerar que el error de perpendicularidad se amplifica con la longitud de la columna"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El punzón cilíndrico de embutido tiene un diámetro de Ø78mm y se monta en la placa portapunzón (punch holder). La cara inferior de la placa portapunzón es el Datum A. El eje del punzón debe ser perpendicular a esta cara para que entre centrado en la cavidad de la matriz durante el embutido. La holgura radial entre punzón y cavidad es de 0.4mm por lado (igual al espesor de la lámina calibre 26). Si el punzón no es perpendicular, rozará contra un lado de la cavidad y en el lado opuesto habrá holgura excesiva, generando piezas con paredes de espesor no uniforme. Longitud del punzón: 120mm. Pregunta: ¿qué control, datum, tolerancia y justificación?",
+      "expected_spec": {
+        "control": "Perpendicularidad",
+        "datum_required": true,
+        "datum": "cara de la placa portapunzón como Datum A",
+        "tolerance_value_mm": "0.05-0.08",
+        "tolerance_rationale": "Con holgura radial de 0.4mm por lado y longitud de 120mm, la perpendicularidad del eje del punzón debe ser menor que la holgura radial total (0.8mm) para evitar contacto punzón-cavidad. 0.05-0.08mm deja margen suficiente considerando que hay otros componentes con tolerancias propias. La zona de tolerancia cilíndrica (Ø0.05-0.08mm) alrededor del eje ideal es la especificación ASME Y14.5 correcta.",
+        "justification_keywords": [
+          "perpendicularidad",
+          "datum placa portapunzón",
+          "eje del punzón",
+          "holgura radial",
+          "espesor de pared uniforme",
+          "zona cilíndrica",
+          "contacto punzón-cavidad"
+        ],
+        "common_mistakes": [
+          "No relacionar la tolerancia de perpendicularidad con la holgura radial disponible",
+          "Omitir el datum de referencia",
+          "Usar tolerancia entre planos en vez de zona cilíndrica para un eje",
+          "Confundir la cara del punzón (planitud) con el eje del punzón (perpendicularidad)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Un buje guía (guide bushing) de Ø32mm exterior x Ø26mm interior tiene una longitud de 60mm. Está alojado con ajuste de prensa en la placa base superior. El eje del barreno del buje debe ser perpendicular a la cara de la placa (Datum A) para que la columna guía de Ø25mm entre y salga sin carga lateral. El juego entre columna y buje es de 0.02-0.04mm por lado. Pregunta: ¿qué control especificarías para el eje del barreno interior del buje respecto a Datum A (cara de la placa), qué tolerancia en mm y por qué ese valor es correcto para esta situación?",
+      "expected_spec": {
+        "control": "Perpendicularidad",
+        "datum_required": true,
+        "datum": "cara de la placa base superior como Datum A",
+        "tolerance_value_mm": "0.02-0.05",
+        "tolerance_rationale": "Con un juego columna-buje de 0.02-0.04mm por lado (total 0.04-0.08mm), la perpendicularidad del eje del buje debe ser inferior al juego total para no generar interferencia. 0.02-0.05mm es coherente: 0.02mm para manufactura cuidadosa, 0.05mm como máximo aceptable. Para un buje de 60mm de longitud, 0.05mm representa un ángulo de 0.048 grados, que mantiene la columna dentro del juego funcional.",
+        "justification_keywords": [
+          "perpendicularidad",
+          "datum cara de placa",
+          "buje guía",
+          "eje del barreno",
+          "juego columna-buje",
+          "carga lateral",
+          "zona cilíndrica"
+        ],
+        "common_mistakes": [
+          "Usar cilindricidad en vez de perpendicularidad (cilindricidad controla la forma del barreno, no su orientación)",
+          "No relacionar la tolerancia con el juego columna-buje disponible",
+          "Omitir el datum",
+          "Usar tolerancia mayor que el juego total disponible"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Perpendicularidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La cara lateral de la cavidad de la matriz (die cavity wall) en un troquel de embutido es una superficie cilíndrica interior de Ø80mm x 40mm de profundidad. Esta pared es la que da forma a la pared lateral de la pieza embutida. La cara de la matriz (die face) es el Datum A. Si la pared de la cavidad no es perpendicular a la cara de la matriz, las piezas embutidas tendrán paredes con ángulo (draft no intencional) y el embutido requerirá mayor fuerza en un lado. El mecanizado es por torno CNC. Pregunta: ¿qué control geométrico aplica para la pared interior de la cavidad respecto a Datum A, qué tolerancia en mm y cuál es la justificación?",
+      "expected_spec": {
+        "control": "Perpendicularidad",
+        "datum_required": true,
+        "datum": "cara de la matriz (die face) como Datum A",
+        "tolerance_value_mm": "0.05-0.10",
+        "tolerance_rationale": "Para una cavidad de Ø80mm x 40mm de profundidad, la perpendicularidad de la pared respecto a la cara controla el ángulo de las paredes de la pieza embutida. Con 0.05-0.10mm en 40mm de profundidad, el ángulo máximo es <0.15 grados, imperceptible en la pieza final de calibre 26. Tolerancias más laxas generarían piezas con forma cónica no intencional.",
+        "justification_keywords": [
+          "perpendicularidad",
+          "datum cara de la matriz",
+          "pared de cavidad",
+          "pared lateral de pieza",
+          "ángulo no intencional",
+          "draft",
+          "mecanizado CNC"
+        ],
+        "common_mistakes": [
+          "Usar cilindricidad para la pared (cilindricidad controla la forma cilíndrica, no orientación respecto a otra superficie)",
+          "No especificar datum",
+          "No conectar la tolerancia con el efecto en la geometría de la pieza embutida",
+          "Usar rectitud de generatriz en vez de perpendicularidad de la superficie"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Posición",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La placa base inferior de un troquel de embutido tiene cuatro barrenos de guía (guide post holes) de Ø25.0mm para alojar las columnas guía. Los barrenos están ubicados simétricamente en los cuatro vértices de un rectángulo de 250mm x 200mm, con el origen en el centro de la placa. Los datums son: Datum A = cara superior de la placa, Datum B = borde largo, Datum C = borde corto. Si la posición de los barrenos no coincide con la de los barrenos correspondientes en la placa base superior, las columnas guía no podrán ensamblar el troquel. Pregunta: ¿qué control geométrico especificarías para los ejes de los cuatro barrenos, cuáles son los datums, qué tolerancia en mm y por qué?",
+      "expected_spec": {
+        "control": "Posición",
+        "datum_required": true,
+        "datum": "Datum A (cara superior) | Datum B (borde largo) | Datum C (borde corto)",
+        "tolerance_value_mm": "Ø0.10-Ø0.20",
+        "tolerance_rationale": "Los cuatro barrenos de columna guía deben quedar dentro de una zona cilíndrica de Ø0.10-0.20mm alrededor de su posición verdadera. La tolerancia de posición en zona cilíndrica (símbolo Ø) es la correcta según ASME Y14.5-2018 para características de revolución. Con Ø0.15mm, los centros reales pueden desviarse hasta 0.075mm de la posición teórica exacta, suficiente para el ensamble con las columnas de Ø25mm considerando el ajuste de prensa.",
+        "justification_keywords": [
+          "posición",
+          "tres datums",
+          "zona cilíndrica",
+          "símbolo Ø tolerancia",
+          "posición verdadera",
+          "ensamble de columnas",
+          "barrenos simétricos"
+        ],
+        "common_mistakes": [
+          "Usar localización por coordenadas (±0.05 en X e Y) en vez de tolerancia de posición cilíndrica",
+          "Omitir uno o más datums del marco de control",
+          "No usar el símbolo de diámetro (Ø) delante del valor de tolerancia",
+          "Confundir posición con concentricidad o simetría"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Posición",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La placa portabuje (bushing plate) de la mitad superior del troquel tiene cuatro barrenos de Ø32.0mm donde se alojan los bujes guía. Estos barrenos deben estar posicionados exactamente igual que los barrenos de columna en la placa base inferior para que columnas y bujes sean coaxiales cuando el troquel se cierra. Los datums de la portabuje son: Datum A = cara inferior de la placa, Datum B = borde largo, Datum C = borde corto. El patrón de barrenos es el mismo 250mm x 200mm. Las columnas guía tienen Ø25mm y los bujes interior Ø26mm (juego de 0.5mm por lado). Pregunta: ¿qué control, datums, tolerancia y justificación para los barrenos de buje?",
+      "expected_spec": {
+        "control": "Posición",
+        "datum_required": true,
+        "datum": "Datum A (cara inferior de portabuje) | Datum B (borde largo) | Datum C (borde corto)",
+        "tolerance_value_mm": "Ø0.15-Ø0.25",
+        "tolerance_rationale": "Con un juego columna-buje de 1.0mm total (0.5mm por lado), la posición de los barrenos de buje puede ser ligeramente más laxa que la de los barrenos de columna. Ø0.15-0.25mm garantiza que la suma de errores de posición (barreno columna + barreno buje) no exceda el juego disponible. El datum A es la cara de contacto con los elementos del troquel, B y C son las referencias planares para el patrón.",
+        "justification_keywords": [
+          "posición",
+          "tres datums",
+          "zona cilíndrica Ø",
+          "juego columna-buje",
+          "patrón de barrenos",
+          "coaxialidad columna-buje",
+          "suma de errores"
+        ],
+        "common_mistakes": [
+          "No relacionar la tolerancia con el juego columna-buje disponible",
+          "Usar el mismo datum pero olvidar que la placa es diferente (cara inferior, no superior)",
+          "No usar símbolo Ø en la tolerancia de posición",
+          "Usar más de tres datums o el orden incorrecto (A|B|C debe reflejar la secuencia de restricción de grados de libertad)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Posición",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El punzón de embutido de Ø78mm tiene un espárrago roscado M20 en su centro para fijarlo a la placa portapunzón. El barreno central de la placa portapunzón debe coincidir con el eje del punzón. Adicionalmente, hay cuatro barrenos de tornillo de M10 a 90mm del centro (patrón cuadrado de 180mm x 180mm) para sujetar el punzón. Todos los barrenos deben posicionarse respecto a: Datum A = cara superior de la placa portapunzón, Datum B y C = bordes de referencia. Si el barreno central M20 no está centrado respecto al eje del punzón, el punzón quedará excéntrico. Pregunta: ¿qué control para el barreno central M20, qué datums, qué tolerancia y por qué?",
+      "expected_spec": {
+        "control": "Posición",
+        "datum_required": true,
+        "datum": "Datum A (cara superior de placa portapunzón) | Datum B | Datum C",
+        "tolerance_value_mm": "Ø0.10-Ø0.15",
+        "tolerance_rationale": "El barreno M20 central es el elemento de localización primaria del punzón. La holgura radial punzón-cavidad es 0.4mm por lado. Una posición de Ø0.10-0.15mm para el barreno central asegura que el punzón quede centrado dentro de la cavidad con margen para otras tolerancias del ensamble. El modificador de posición cilíndrica (Ø) es obligatorio por ASME Y14.5-2018 para barrenos.",
+        "justification_keywords": [
+          "posición",
+          "datum A B C",
+          "barreno central",
+          "excentricidad del punzón",
+          "holgura radial",
+          "zona cilíndrica Ø",
+          "localización primaria"
+        ],
+        "common_mistakes": [
+          "Confundir posición con concentricidad (concentricidad es para ejes en piezas torneadas, posición es para barrenos en placas)",
+          "No usar el símbolo Ø de zona cilíndrica",
+          "No relacionar la tolerancia de posición con la holgura radial punzón-cavidad",
+          "Omitir Datum A que restringe la orientación normal a la placa"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Posición",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "La placa de expulsión (ejector plate) de un troquel de embutido tiene tres pines expulsores de Ø8mm. Estos pines deben pasar por barrenos de Ø8.2mm en la cara de la matriz para empujar la pieza embutida fuera de la cavidad. Los tres barrenos en la placa de expulsión deben coincidir exactamente en posición con los barrenos en la cara de la matriz para que los pines puedan moverse libremente sin rozar. La holgura pin-barreno es 0.1mm por lado (Ø0.2mm total). Datum A = cara de la placa de expulsión, Datum B y C = bordes. Los pines están en un triángulo equilátero de 50mm de lado centrado en el eje del punzón. Pregunta: ¿qué control, datums, tolerancia y justificación para los barrenos de la placa de expulsión?",
+      "expected_spec": {
+        "control": "Posición",
+        "datum_required": true,
+        "datum": "Datum A (cara de placa de expulsión) | Datum B | Datum C",
+        "tolerance_value_mm": "Ø0.08-Ø0.12",
+        "tolerance_rationale": "Con holgura de Ø0.2mm total entre pin y barreno, la tolerancia de posición de cada barreno debe ser menos de la mitad de esa holgura para asegurar ensamble libre. Ø0.08-0.12mm deja margen para que los errores de posición de ambas placas (expulsión + cara de matriz) sumen sin exceder la holgura. Valor más ajustado que otros barrenos por ser holgura muy pequeña.",
+        "justification_keywords": [
+          "posición",
+          "datum A B C",
+          "pines expulsores",
+          "holgura pin-barreno",
+          "ensamble libre",
+          "zona cilíndrica Ø",
+          "patrón de tres barrenos"
+        ],
+        "common_mistakes": [
+          "Usar tolerancia mayor que la holgura disponible",
+          "No considerar que los errores de posición de ambas placas se suman",
+          "Omitir datum A que define el plano de referencia para los ejes de los barrenos",
+          "No usar símbolo Ø pensando en tolerancias de coordenadas"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Una columna guía (guide post) de un troquel de embutido tiene un diámetro nominal de Ø25h6 (Ø25.000 / Ø24.987mm) y longitud de 200mm. La columna desliza repetidamente dentro de un buje guía con juego de 0.02-0.04mm por lado. Si la columna no es perfectamente cilíndrica (tiene ovalidad, conicidad o perfil ondulado), habrá zonas donde el juego sea mayor o menor al nominal, causando: donde el juego es menor, interferencia y gripado; donde el juego es mayor, holgura excesiva y juego lateral en el troquel. Pregunta: ¿qué control geométrico aplica al cuerpo cilíndrico de esta columna, requiere datum, qué tolerancia en mm y cuál es la justificación técnica?",
+      "expected_spec": {
+        "control": "Cilindricidad",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.005-0.015",
+        "tolerance_rationale": "Con un juego de 0.02-0.04mm por lado (tolerancia total del ajuste h6 de 0.013mm), la cilindricidad debe ser una fracción de esa tolerancia de tamaño. 0.005-0.015mm asegura que ninguna sección transversal ni generatriz varía más de esa cantidad, manteniendo el juego funcional uniforme en toda la longitud. La cilindricidad es el control de forma 3D más completo para un cilindro: controla redondez, rectitud y conicidad simultáneamente.",
+        "justification_keywords": [
+          "cilindricidad",
+          "sin datum",
+          "columna guía",
+          "juego uniforme",
+          "gripado",
+          "redondez",
+          "conicidad",
+          "ajuste h6"
+        ],
+        "common_mistakes": [
+          "Usar redondez (roundness/circularity) en vez de cilindricidad (redondez solo controla secciones, no la forma 3D completa)",
+          "Agregar datum cuando cilindricidad es control de forma pura",
+          "Usar tolerancia mayor que la tolerancia de tamaño del ajuste h6",
+          "Confundir cilindricidad con concentricidad o coaxialidad (estas controlan relación entre dos ejes)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El barreno interior de un buje guía (guide bushing) tiene un diámetro nominal de Ø26H6 (Ø26.000 / Ø26.013mm). El buje tiene 60mm de longitud. Dentro de este barreno desliza la columna guía de Ø25h6. El barreno es mecanizado por rectificado interior (internal grinding). Si el barreno tiene errores de cilindricidad (no es perfectamente cilíndrico), habrá zonas donde la columna tenga mayor interferencia, generando desgaste localizado y reducción de la vida útil del buje. Pregunta: ¿qué control geométrico aplica al barreno interior del buje, requiere datum, qué tolerancia en mm y por qué ese valor es correcto?",
+      "expected_spec": {
+        "control": "Cilindricidad",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.005-0.010",
+        "tolerance_rationale": "La tolerancia H6 del barreno es 0.013mm. La cilindricidad debe ser una fracción de la tolerancia de tamaño (ASME Y14.5-2018 Regla #1 implica que errores de forma están contenidos dentro de la zona de tamaño). 0.005-0.010mm garantiza que el barreno es suficientemente cilíndrico para mantener el juego uniforme en toda su longitud. El rectificado interior puede lograr cilindricidades de 0.003-0.008mm, por lo que este rango es técnicamente alcanzable.",
+        "justification_keywords": [
+          "cilindricidad",
+          "sin datum",
+          "buje guía",
+          "barreno interior",
+          "desgaste uniforme",
+          "tolerancia H6",
+          "Regla numero 1",
+          "rectificado interior"
+        ],
+        "common_mistakes": [
+          "Usar perpendicularidad del eje del barreno en vez de cilindricidad de la superficie del barreno",
+          "Agregar datum cuando cilindricidad controla la forma intrínseca del cilindro",
+          "Especificar tolerancia mayor que la tolerancia de tamaño H6",
+          "Confundir cilindricidad con posición del eje del barreno (posición controla ubicación, cilindricidad controla forma)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El punzón de embutido cilíndrico tiene un diámetro de Ø78h7 (Ø78.000 / Ø77.970mm) en su zona de trabajo y 120mm de longitud funcional. La holgura entre punzón y cavidad de la matriz es de 0.4mm por lado (equivalente al espesor de la lámina calibre 26). Si el punzón tiene errores de cilindricidad (ovalidad, conicidad), la holgura respecto a la cavidad no será uniforme: en zonas de mayor diámetro, el punzón rozará contra la lámina con más fuerza, adelgazando la pared de la pieza; en zonas de menor diámetro, la holgura aumentará y la pared quedará más gruesa. Pregunta: ¿qué control geométrico aplica al diámetro exterior del punzón, requiere datum, tolerancia en mm y justificación?",
+      "expected_spec": {
+        "control": "Cilindricidad",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.02-0.05",
+        "tolerance_rationale": "Con holgura de 0.4mm por lado y tolerancia de tamaño h7 de 0.030mm, la cilindricidad del punzón puede ser 0.02-0.05mm: menor que la holgura funcional de 0.4mm para que las variaciones de forma no afecten significativamente el espesor de la pared embutida. A diferencia de las columnas guía, el punzón tiene mayor holgura funcional, por lo que puede admitir cilindricidad ligeramente mayor.",
+        "justification_keywords": [
+          "cilindricidad",
+          "sin datum",
+          "punzón de embutido",
+          "holgura punzón-cavidad",
+          "espesor de pared uniforme",
+          "ovalidad",
+          "conicidad",
+          "tolerancia h7"
+        ],
+        "common_mistakes": [
+          "Usar redondez en vez de cilindricidad (la conicidad a lo largo de 120mm también es un error crítico)",
+          "Agregar datum innecesario",
+          "No relacionar la tolerancia de cilindricidad con la holgura funcional de 0.4mm",
+          "Confundir la zona de trabajo (Ø78mm) con la zona de montaje del punzón (que tiene diferente diámetro)"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "Los barrenos de alojamiento de las columnas guía en la placa base inferior tienen Ø25.0mm con ajuste de prensa (H7/p6). Las columnas se prensan con una interferencia de 0.010-0.021mm. La longitud de los barrenos es 50mm. Si el barreno no es perfectamente cilíndrico, la interferencia de prensa no será uniforme en toda la longitud: en zonas con mayor diámetro la interferencia será menor y la columna quedará floja; en zonas con menor diámetro habrá mayor interferencia y riesgo de fracturar la placa durante el prensado. Pregunta: ¿qué control geométrico aplica al barreno de alojamiento de la columna, requiere datum, qué tolerancia en mm y por qué?",
+      "expected_spec": {
+        "control": "Cilindricidad",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.005-0.010",
+        "tolerance_rationale": "La interferencia de prensa H7/p6 es 0.010-0.021mm (rango de 0.011mm). La cilindricidad del barreno debe ser menor que la variación del ajuste para no generar zonas flojas ni zonas de interferencia excesiva. 0.005-0.010mm es una fracción conservadora de la variación del ajuste, asegurando prensado uniforme sin riesgo de fractura de placa o columna floja.",
+        "justification_keywords": [
+          "cilindricidad",
+          "sin datum",
+          "barreno de alojamiento",
+          "ajuste de prensa",
+          "interferencia uniforme",
+          "fractura por prensado",
+          "H7/p6"
+        ],
+        "common_mistakes": [
+          "Usar posición del barreno en vez de cilindricidad de la superficie del barreno",
+          "Agregar datum",
+          "No relacionar cilindricidad con la uniformidad del ajuste de prensa",
+          "Usar tolerancia mayor que el rango de interferencia del ajuste"
+        ]
+      }
+    }
+  },
+  {
+    "control": "Cilindricidad",
+    "nivel": 3,
+    "type": "open_answer",
+    "anchor": "anchored",
+    "source": "cidesi",
+    "validated_by": null,
+    "active": false,
+    "content": {
+      "scenario": "El radio de entrada (nose radius) del punzón de embutido es una zona cilíndrica de Ø78mm x Ø74mm (radio de curvatura de 2mm en el canto del punzón). Esta zona es una pequeña banda cilíndrica de 8mm de longitud donde el punzón hace contacto deslizante con la lámina al inicio del embutido. Si esta zona no es perfectamente cilíndrica, el contacto con la lámina no será uniforme circunferencialmente, concentrando tensiones en ciertos sectores y generando adelgazamiento diferencial que puede provocar fractura de la pieza embutida. Pregunta: ¿qué control geométrico aplica a esta banda cilíndrica de 8mm de longitud, requiere datum, qué tolerancia en mm y cuál es la importancia de este control?",
+      "expected_spec": {
+        "control": "Cilindricidad",
+        "datum_required": false,
+        "datum": "ninguno",
+        "tolerance_value_mm": "0.01-0.03",
+        "tolerance_rationale": "La zona del nose radius es crítica porque es el punto de mayor tensión durante el embutido. Con solo 8mm de longitud pero contacto deslizante continuo, la cilindricidad de 0.01-0.03mm asegura que el contacto con la lámina calibre 26 sea uniforme en toda la circunferencia. Un valor más laxo (>0.05mm) concentraría tensiones y generaría fractura o adelgazamiento diferencial en la pieza embutida.",
+        "justification_keywords": [
+          "cilindricidad",
+          "sin datum",
+          "nose radius",
+          "radio de entrada del punzón",
+          "contacto uniforme",
+          "concentración de tensiones",
+          "adelgazamiento diferencial",
+          "fractura de pieza"
+        ],
+        "common_mistakes": [
+          "Confundir el radio de curvatura (2mm) con el control de cilindricidad de la zona",
+          "Usar redondez pensando que 8mm es suficientemente corto para ignorar variaciones longitudinales",
+          "Agregar datum innecesario",
+          "Subestimar la criticidad de esta zona por su pequeño tamaño axial"
+        ]
+      }
+    }
+  }
+]

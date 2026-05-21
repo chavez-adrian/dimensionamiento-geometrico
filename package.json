@@ -11,7 +11,8 @@
     "test": "node --test test/**/*.test.js",
     "migrate": "node src/migrate.js",
     "seed": "node src/seed.js",
-    "seed:nivel2": "node src/seed-nivel2.js"
+    "seed:nivel2": "node src/seed-nivel2.js",
+    "seed:nivel3": "node scripts/seed-nivel3.js"
   },
   "repository": {
     "type": "git",
