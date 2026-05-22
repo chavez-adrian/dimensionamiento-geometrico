@@ -57,6 +57,14 @@ _Evitar_: Biblioteca, repositorio, base de preguntas.
 Proceso por el cual el modelo evalúa la respuesta abierta del estudiante en Nivel 3 contra la especificación GD&T correcta para el escenario dado. Solo aplica en Nivel 3.
 _Evitar_: Corrección automática, calificación IA, revisión.
 
+**Glosario**:
+Vista de repaso en el aplicativo que muestra los 93 términos de Fundamentos uno por uno en orden pedagógico. Cada tarjeta muestra: término en español, nombre en inglés, abreviatura, símbolo GD&T (cuando existe), definición técnica ASME siempre visible, y coloquial/ejemplo detrás de toggles. Navegación Anterior/Siguiente y filtro por capa (A–P). Alimentado por la tabla `concept_glossary` en Neon.
+_Evitar_: Diccionario, referencia, biblioteca de términos.
+
+**Secuencia Pedagógica**:
+Orden de los 93 conceptos de Fundamentos en 16 capas (A–P), donde cada concepto depende de los anteriores. La capa A (Lenguaje del dibujo) es prerequisito de B (Tolerancias), que es prerequisito de C (Métodos de dimensionamiento), y así sucesivamente hasta la capa P (Notas históricas). El generador de ejercicios de Fundamentos respeta este orden.
+_Evitar_: Secuencia de temas, progresión de contenido.
+
 ### Manufactura
 
 **Troquel de Embutido**:
@@ -78,6 +86,15 @@ Los PDFs del curso son internamente inconsistentes en algunos términos. El sist
 | Maximum Material Condition | **Condición de Máximo Material** | "Material Máximo" |
 
 **Concentricidad y Simetría**: Eliminadas como controles independientes en ASME Y14.5-2018. No forman parte del sistema. Se mencionan únicamente como notas históricas dentro de Fundamentos para que el estudiante entienda por qué no aparecen en planos modernos.
+
+### Neon — tablas actuales
+
+| Tabla | Propósito |
+|---|---|
+| `knowledge_state` | Progreso del estudiante: 17 celdas (Fundamentos×2 + 5 controles×3) |
+| `exercise_bank` | Banco de ejercicios L2 (PDF) y L3 (CIDESI, active=FALSE) |
+| `exercise_sessions` | Historial de preguntas vistas — alimenta anti-repetición |
+| `concept_glossary` | 93 términos pedagógicos con definición, coloquial, ejemplo, símbolo |
 
 ## Flagged ambiguities
 
