@@ -88,7 +88,7 @@ app.get('/api/glossary', async (req, res) => {
   }
   try {
     const { rows } = await pool.query(
-      'SELECT term, english_name, abbreviation, definition, coloquial, example, layer_id, layer_name, pedagogical_order FROM concept_glossary WHERE pedagogical_order = $1',
+      'SELECT term, english_name, abbreviation, symbol, definition, coloquial, example, layer_id, layer_name, pedagogical_order FROM concept_glossary WHERE pedagogical_order = $1',
       [order]
     );
     if (rows.length === 0) {

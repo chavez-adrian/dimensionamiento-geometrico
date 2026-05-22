@@ -152,6 +152,8 @@
     .gl-term { font-size: 1.4rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.25rem; }
     .gl-english { font-size: 0.9rem; color: #64748b; font-style: italic; }
     .gl-abbr { display: inline-block; background: #0f172a; border: 1px solid #475569; color: #94a3b8; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; padding: 0.15rem 0.5rem; border-radius: 0.25rem; margin-top: 0.5rem; text-transform: uppercase; }
+    .gl-symbol { display: inline-flex; align-items: center; justify-content: center; background: #172554; border: 1px solid #2563eb; color: #93c5fd; font-size: 1.6rem; width: 2.4rem; height: 2.4rem; border-radius: 0.5rem; margin-left: 0.75rem; vertical-align: middle; flex-shrink: 0; }
+    .gl-card-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
     .gl-section { padding: 1rem 1.25rem; border-bottom: 1px solid #334155; }
     .gl-section:last-child { border-bottom: none; }
     .gl-section-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #475569; margin-bottom: 0.4rem; }
@@ -239,9 +241,14 @@
     <div id="gl-loading" class="gl-loading">Cargando...</div>
     <div id="gl-card" class="gl-card" style="display:none">
       <div class="gl-card-header">
-        <div class="gl-term" id="gl-term"></div>
-        <div class="gl-english" id="gl-english"></div>
-        <div id="gl-abbr-wrap"></div>
+        <div class="gl-card-header-top">
+          <div>
+            <div class="gl-term" id="gl-term"></div>
+            <div class="gl-english" id="gl-english"></div>
+            <div id="gl-abbr-wrap"></div>
+          </div>
+          <div id="gl-symbol-wrap"></div>
+        </div>
       </div>
       <div class="gl-section">
         <div class="gl-section-label">Definición técnica (ASME)</div>
@@ -537,6 +544,8 @@
       document.getElementById('gl-english').textContent = t.english_name || '';
       const abbrWrap = document.getElementById('gl-abbr-wrap');
       abbrWrap.innerHTML = t.abbreviation ? `<span class="gl-abbr">${t.abbreviation}</span>` : '';
+      const symbolWrap = document.getElementById('gl-symbol-wrap');
+      symbolWrap.innerHTML = t.symbol ? `<span class="gl-symbol">${t.symbol}</span>` : '';
       document.getElementById('gl-coloquial').textContent = t.coloquial || '-';
       document.getElementById('gl-example').textContent = t.example || '-';
       document.getElementById('gl-definition').textContent = t.definition || '-';
