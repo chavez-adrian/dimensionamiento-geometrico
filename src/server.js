@@ -70,6 +70,36 @@ app.post('/api/exercise/evaluate', async (req, res) => {
   }
 });
 
+app.get('/api/glossary/layers', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT layer_id, layer_name, MIN(pedagogical_order) as first_order FROM concept_glossary GROUP BY layer_id, layer_name ORDER BY first_order'
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/glossary', async (req, res) => {
+  const order = parseInt(req.query.order);
+  if (!order || order < 1 || order > 93) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  try {
+    const { rows } = await pool.query(
+      'SELECT term, english_name, abbreviation, definition, coloquial, example, layer_id, layer_name, pedagogical_order FROM concept_glossary WHERE pedagogical_order = $1',
+      [order]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });

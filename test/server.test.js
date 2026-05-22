@@ -16,6 +16,83 @@ function getJSON(url) {
   });
 }
 
+describe('GET /api/glossary', () => {
+  let server;
+  let port;
+
+  before(() => new Promise((resolve) => {
+    server = app.listen(0, () => {
+      port = server.address().port;
+      resolve();
+    });
+  }));
+
+  after(() => new Promise((resolve) => {
+    server.close(resolve);
+  }));
+
+  it('returns term data for order=1', async () => {
+    const { status, body } = await getJSON(`http://localhost:${port}/api/glossary?order=1`);
+    assert.equal(status, 200);
+    assert.ok(body.term, 'body should have term');
+    assert.equal(body.pedagogical_order, 1);
+  });
+
+  it('returns 404 for out-of-range order', async () => {
+    const { status } = await getJSON(`http://localhost:${port}/api/glossary?order=999`);
+    assert.equal(status, 404);
+  });
+
+  it('returns all required fields', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/glossary?order=25`);
+    assert.ok('term' in body);
+    assert.ok('english_name' in body);
+    assert.ok('abbreviation' in body);
+    assert.ok('definition' in body);
+    assert.ok('coloquial' in body);
+    assert.ok('example' in body);
+    assert.ok('layer_id' in body);
+    assert.ok('layer_name' in body);
+  });
+});
+
+describe('GET /api/glossary/layers', () => {
+  let server;
+  let port;
+
+  before(() => new Promise((resolve) => {
+    server = app.listen(0, () => {
+      port = server.address().port;
+      resolve();
+    });
+  }));
+
+  after(() => new Promise((resolve) => {
+    server.close(resolve);
+  }));
+
+  it('returns 16 layers', async () => {
+    const { status, body } = await getJSON(`http://localhost:${port}/api/glossary/layers`);
+    assert.equal(status, 200);
+    assert.ok(Array.isArray(body));
+    assert.equal(body.length, 16);
+  });
+
+  it('layers have required fields', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/glossary/layers`);
+    body.forEach(layer => {
+      assert.ok('layer_id' in layer);
+      assert.ok('layer_name' in layer);
+      assert.ok('first_order' in layer);
+    });
+  });
+
+  it('layers are ordered by first_order', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/glossary/layers`);
+    assert.ok(body[0].first_order < body[1].first_order);
+  });
+});
+
 describe('GET /api/state', () => {
   let server;
   let port;
