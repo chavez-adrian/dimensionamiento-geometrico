@@ -244,16 +244,16 @@
         <div id="gl-abbr-wrap"></div>
       </div>
       <div class="gl-section">
-        <div class="gl-section-label">En simple</div>
-        <div class="gl-section-text" id="gl-coloquial"></div>
+        <div class="gl-section-label">Definición técnica (ASME)</div>
+        <div class="gl-section-text" id="gl-definition"></div>
       </div>
-      <div class="gl-section">
-        <div class="gl-section-label">Ejemplo en troquel</div>
-        <div class="gl-section-text" id="gl-example"></div>
-      </div>
-      <details class="gl-details" id="gl-details">
-        <summary>Ver definicion tecnica (ASME)</summary>
-        <div class="gl-definition" id="gl-definition"></div>
+      <details class="gl-details" id="gl-details-coloquial">
+        <summary>Ver definición coloquial</summary>
+        <div class="gl-definition" id="gl-coloquial"></div>
+      </details>
+      <details class="gl-details" id="gl-details-example">
+        <summary>Ver un ejemplo</summary>
+        <div class="gl-definition" id="gl-example"></div>
       </details>
     </div>
     <div class="gl-nav">
@@ -542,8 +542,8 @@
       document.getElementById('gl-definition').textContent = t.definition || '-';
       document.getElementById('gl-meta').textContent =
         `#${t.pedagogical_order} de ${GL_MAX}  ·  ${t.layer_id} - ${t.layer_name}`;
-      const details = document.getElementById('gl-details');
-      details.open = false;
+      document.getElementById('gl-details-coloquial').open = false;
+      document.getElementById('gl-details-example').open = false;
       // Sync layer dropdown
       const select = document.getElementById('gl-layer-select');
       const matchingLayer = glLayers.find(l => l.first_order <= glCurrentOrder)
