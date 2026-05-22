@@ -23,29 +23,39 @@ function getLayer(position1indexed) {
   return { layer_id: 'Z', layer_name: 'Desconocida' };
 }
 
-async function generateDefinition(term) {
+async function callClaude(term) {
   const prompt = `Eres un experto en GD&T segun ASME Y14.5-2018 (R2024) y en manufactura de articulos de acero esmaltado.
 
-Para el termino de GD&T: "${term}"
+Para el termino de GD&T en espanol: "${term}"
 
-Genera en espanol:
-1. definition: Definicion formal tecnica segun ASME Y14.5-2018 (2-3 oraciones, lenguaje preciso de norma).
-2. coloquial: Explicacion en lenguaje simple que cualquier tecnico de manufactura sin formacion en GD&T entienda (1-2 oraciones, sin jerga, usa analogias cotidianas si ayuda).
-3. example: Ejemplo concreto aplicado a un troquel de embutido en frio para lamina de acero al carbono calibre 26, como los que usa Peltre Nacional (empresa mexicana fabricante de articulos de acero esmaltado). Menciona una parte especifica del troquel (punch, dado, placa sujetadora, resortes, guias, descargador) y un valor numerico realista si aplica.
+Genera en espanol los siguientes campos:
+1. english_name: Nombre oficial en ingles segun ASME Y14.5-2018 (2-5 palabras).
+2. abbreviation: Abreviatura oficial en ingles (ej: MMC, LMC, RFS, FOS, FCF, AME, VC, RC, WCB, FIM). Si el termino no tiene abreviatura estandar, usa cadena vacia "".
+3. definition: Definicion formal tecnica segun ASME Y14.5-2018 (2-3 oraciones precisas). Si el termino involucra calculos o relaciones matematicas, incluyelas correctamente.
+4. coloquial: Explicacion en lenguaje simple para un tecnico de manufactura sin formacion en GD&T (1-2 oraciones, usa analogias cotidianas).
+5. example: Ejemplo concreto aplicado a un troquel de embutido en frio para lamina de acero al carbono calibre 26 (espesor 0.457 mm), como los que fabrica Peltre Nacional (empresa mexicana de articulos de acero esmaltado / peltre). Menciona una parte especifica del troquel (punch, dado, placa sujetadora, resortes, guias, descargador, porta-dado). Si el ejemplo involucra calculos numericos, verificalos: para MMC usa el mayor tamano de rasgo externo / menor de interno; VC = MMC + tolerancia geometrica (rasgo externo) o MMC - tolerancia (rasgo interno); Bonus = |tamano actual - MMC|.
 
-Responde SOLO con JSON valido, sin texto adicional:
-{"definition": "...", "coloquial": "...", "example": "..."}`;
+Responde SOLO con JSON valido sin texto adicional:
+{"english_name": "...", "abbreviation": "...", "definition": "...", "coloquial": "...", "example": "..."}`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 512,
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1024,
     messages: [{ role: 'user', content: prompt }]
   });
 
   let text = message.content[0].text.trim();
-  // Strip markdown code fences if present
   text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
   return JSON.parse(text);
+}
+
+async function generateDefinition(term) {
+  try {
+    return await callClaude(term);
+  } catch (err) {
+    console.error(`  Retry for "${term}" after error: ${err.message}`);
+    return await callClaude(term);
+  }
 }
 
 async function run() {
@@ -56,12 +66,16 @@ async function run() {
       const position = i + 1;
       const { layer_id, layer_name } = getLayer(position);
 
+      let english_name = null;
+      let abbreviation = null;
       let definition = null;
       let coloquial = null;
       let example = null;
 
       try {
         const result = await generateDefinition(term);
+        english_name = result.english_name;
+        abbreviation = result.abbreviation;
         definition = result.definition;
         coloquial = result.coloquial;
         example = result.example;
@@ -70,14 +84,15 @@ async function run() {
       }
 
       await client.query(
-        `INSERT INTO concept_glossary (term, pedagogical_order, layer_id, layer_name, definition, coloquial, example)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO concept_glossary (term, pedagogical_order, layer_id, layer_name, english_name, abbreviation, definition, coloquial, example)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          ON CONFLICT (term) DO UPDATE SET
+           english_name = EXCLUDED.english_name,
+           abbreviation = EXCLUDED.abbreviation,
            definition = EXCLUDED.definition,
            coloquial = EXCLUDED.coloquial,
-           example = EXCLUDED.example,
-           pedagogical_order = EXCLUDED.pedagogical_order`,
-        [term, position, layer_id, layer_name, definition, coloquial, example]
+           example = EXCLUDED.example`,
+        [term, position, layer_id, layer_name, english_name, abbreviation, definition, coloquial, example]
       );
 
       console.log(`[${position}/93] ${term}`);
