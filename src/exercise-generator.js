@@ -19,17 +19,61 @@ function loadGlossary(control) {
   }
 }
 
+function getFundamentosLayerName(layers, position) {
+  if (!layers) return '';
+  const layer = layers.find(l => position >= l.range[0] && position <= l.range[1]);
+  return layer ? layer.name : '';
+}
+
+function getFundamentosFocusTerm(glossary, seenQuestions) {
+  const terminos = glossary.terminos || [];
+  const coveredCount = Math.min(seenQuestions.length, terminos.length - 1);
+  return {
+    focusTerm: terminos[coveredCount],
+    recentTerms: terminos.slice(Math.max(0, coveredCount - 5), coveredCount),
+    layerName: getFundamentosLayerName(glossary.layers, coveredCount + 1)
+  };
+}
+
 async function generateNivel1(control, opts) {
   const glossary = loadGlossary(control);
-  const terminos = (glossary.terminos || []).join(', ');
-  const definicion = glossary.definicion || '';
   const seenQuestions = (opts && opts.seenQuestions) || [];
 
-  const seenHint = seenQuestions.length > 0
-    ? `\nNO formules preguntas similares a estas ya vistas: ${seenQuestions.join(' | ')}`
-    : '';
+  let prompt;
 
-  const prompt = `Eres un experto en GD&T (Dimensionamiento y Tolerancias Geometricas) segun ASME Y14.5-2018.
+  if (control === 'Fundamentos') {
+    const { focusTerm, recentTerms, layerName } = getFundamentosFocusTerm(glossary, seenQuestions);
+    const recentContext = recentTerms.length > 0
+      ? `\nConceptos previos que el estudiante ya conoce (usa como contexto o distractores si aplica): ${recentTerms.join(', ')}`
+      : '';
+    const seenHint = seenQuestions.length > 0
+      ? `\nNO repitas preguntas similares a estas ya vistas: ${seenQuestions.join(' | ')}`
+      : '';
+
+    prompt = `Eres un experto en GD&T segun ASME Y14.5-2018.
+Genera UNA pregunta de opcion multiple de nivel vocabulario sobre el concepto: ${focusTerm}.
+Capa pedagogica actual: ${layerName}${recentContext}${seenHint}
+Devuelve SOLO un objeto JSON valido con exactamente esta estructura:
+{
+  "question": "texto de la pregunta",
+  "options": ["opcion A", "opcion B", "opcion C", "opcion D"],
+  "correct_index": 0,
+  "explanation": "explicacion clara de por que es correcta"
+}
+
+Reglas:
+- correct_index es el indice (0-3) de la respuesta correcta en el array options
+- Las 3 opciones incorrectas deben ser plausibles pero claramente incorrectas
+- La explicacion debe ser educativa y mencionar el concepto clave
+- Escribe todo en espanol`;
+  } else {
+    const terminos = (glossary.terminos || []).join(', ');
+    const definicion = glossary.definicion || '';
+    const seenHint = seenQuestions.length > 0
+      ? `\nNO formules preguntas similares a estas ya vistas: ${seenQuestions.join(' | ')}`
+      : '';
+
+    prompt = `Eres un experto en GD&T (Dimensionamiento y Tolerancias Geometricas) segun ASME Y14.5-2018.
 Genera UNA pregunta de opcion multiple de nivel vocabulario sobre el control geometrico: ${control}.
 
 Definicion de ${control}: ${definicion}
@@ -50,6 +94,7 @@ Reglas:
 - Las 3 opciones incorrectas deben ser plausibles pero claramente incorrectas
 - La explicacion debe ser educativa y mencionar el concepto clave
 - Escribe todo en espanol`;
+  }
 
   const message = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',

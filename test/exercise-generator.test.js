@@ -60,6 +60,26 @@ describe('ExerciseGenerator', () => {
       const second = await generateForControl('Fundamentos', 1, { seenQuestions: [first.question] });
       assertExerciseStructure(second);
     }, { timeout: TIMEOUT * 2 });
+
+    it('course-content.json Fundamentos has 93 terms in pedagogical order', () => {
+      const content = require('../data/course-content.json');
+      assert.equal(content['Fundamentos'].terminos.length, 93);
+      assert.equal(content['Fundamentos'].terminos[0], 'Dibujo de Ingenieria');
+      assert.equal(content['Fundamentos'].terminos[92], 'Simetria nota historica eliminada en ASME 2018');
+      assert.ok(content['Fundamentos'].layers);
+      assert.equal(content['Fundamentos'].layers.length, 16);
+    });
+
+    it('with empty seenQuestions focuses on first pedagogical term (Dibujo de Ingenieria)', async () => {
+      const ex = await generateForControl('Fundamentos', 1, { seenQuestions: [] });
+      assertExerciseStructure(ex);
+    }, { timeout: TIMEOUT });
+
+    it('with 15 seenQuestions focuses on term at position 15', async () => {
+      const fakeSeenQuestions = Array(15).fill('pregunta previa de ejemplo');
+      const ex = await generateForControl('Fundamentos', 1, { seenQuestions: fakeSeenQuestions });
+      assertExerciseStructure(ex);
+    }, { timeout: TIMEOUT });
   });
 
   describe('Nivel 2 structure', () => {
