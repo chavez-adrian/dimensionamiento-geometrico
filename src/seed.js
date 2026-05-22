@@ -1,9 +1,8 @@
 require('dotenv').config();
 const { Pool } = require('pg');
+const { GEOMETRIC_CONTROLS: CONTROLS, USER_ID } = require('./domain');
 
-const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
 const LEVELS = [1, 2, 3];
-const USER_ID = 'adrian';
 
 async function seed() {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });

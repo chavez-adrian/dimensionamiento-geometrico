@@ -1,10 +1,10 @@
-const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
+const { GEOMETRIC_CONTROLS: CONTROLS, PREREQUISITE } = require('./domain');
 const LEVELS = [1, 2, 3];
 const MASTERY_THRESHOLD = 4;
 
 function getInitialState() {
   const state = {};
-  state['Fundamentos'] = {
+  state[PREREQUISITE] = {
     1: { attempts: 0, correct_streak: 0, mastered: false, unlocked: true },
     2: { attempts: 0, correct_streak: 0, mastered: false, unlocked: false },
   };
@@ -39,19 +39,19 @@ function processAnswer(state, control, nivel, isCorrect) {
   return newState;
 }
 
-function shouldUnlockNext(state, control, nivel) {
+function computeUnlocks(state, control, nivel) {
   const cell = state[control][nivel];
-  if (!cell.mastered) return false;
+  if (!cell.mastered) return { nextNivel: null, fanOut: [] };
+
+  if (control === PREREQUISITE && nivel === 2) {
+    return { nextNivel: null, fanOut: [...CONTROLS] };
+  }
+
   const nextNivel = nivel + 1;
-  if (nextNivel > 3) return false;
-  return true;
+  if (nextNivel <= 3) {
+    return { nextNivel, fanOut: [] };
+  }
+  return { nextNivel: null, fanOut: [] };
 }
 
-function getFanOutControls(state, control, nivel) {
-  if (control !== 'Fundamentos' || nivel !== 2) return [];
-  const cell = state[control] && state[control][nivel];
-  if (!cell || !cell.mastered) return [];
-  return ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
-}
-
-module.exports = { getInitialState, processAnswer, checkMastery, shouldUnlockNext, getFanOutControls };
+module.exports = { getInitialState, processAnswer, checkMastery, computeUnlocks };

@@ -1,12 +1,10 @@
 require('dotenv').config();
 const Anthropic = require('@anthropic-ai/sdk');
-const { Pool } = require('pg');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 function shuffleOptions(options, correctIndex) {
   const correct = options[correctIndex];
@@ -127,19 +125,7 @@ Reglas:
   };
 }
 
-async function getUnseenNivel2FromBank(control, seenIds) {
-  const placeholders = seenIds.length > 0
-    ? seenIds.map((_, i) => `$${i + 3}`).join(', ')
-    : 'NULL';
-  const query = seenIds.length > 0
-    ? `SELECT id, content FROM exercise_bank WHERE control = $1 AND nivel = $2 AND source = 'curso_pdf' AND active = TRUE AND id NOT IN (${placeholders}) ORDER BY RANDOM() LIMIT 1`
-    : `SELECT id, content FROM exercise_bank WHERE control = $1 AND nivel = $2 AND source = 'curso_pdf' AND active = TRUE ORDER BY RANDOM() LIMIT 1`;
-  const params = seenIds.length > 0 ? [control, 2, ...seenIds] : [control, 2];
-  const { rows } = await pool.query(query, params);
-  return rows[0] || null;
-}
-
-async function generateNivel2Dynamic(control) {
+async function generateDynamic(control, nivel, opts) {
   const glossary = loadGlossary(control);
   const terminos = (glossary.terminos || []).join(', ');
   const definicion = glossary.definicion || '';
@@ -195,37 +181,37 @@ Reglas:
   };
 }
 
-async function generateNivel2(control, opts) {
-  const forceDynamic = opts && opts.forceDynamic;
-  const seenIds = (opts && opts.seenIds) || [];
+module.exports = function createGenerator(stateStore) {
+  async function selectFromBank(control, nivel, seenIds) {
+    const row = await stateStore.getUnseenNivel2(control, nivel, seenIds);
+    if (!row) return null;
+    const shuffled = shuffleOptions(row.content.options, row.content.correct_index);
+    return {
+      id: uuidv4(),
+      question: row.content.question,
+      options: shuffled.options,
+      correct_index: shuffled.correct_index,
+      explanation: row.content.explanation,
+      source: 'banco',
+      bank_id: row.id,
+    };
+  }
 
-  if (!forceDynamic) {
-    const bankRow = await getUnseenNivel2FromBank(control, seenIds);
-    if (bankRow) {
-      const shuffled = shuffleOptions(bankRow.content.options, bankRow.content.correct_index);
-      return {
-        id: uuidv4(),
-        question: bankRow.content.question,
-        options: shuffled.options,
-        correct_index: shuffled.correct_index,
-        explanation: bankRow.content.explanation,
-        source: 'banco',
-        bank_id: bankRow.id,
-      };
+  async function generateForControl(control, nivel, opts) {
+    if (nivel === 1) {
+      return generateNivel1(control, opts);
     }
+    if (nivel === 2) {
+      const forceDynamic = opts && opts.forceDynamic;
+      const seenIds = (opts && opts.seenIds) || [];
+      if (!forceDynamic) {
+        const banked = await selectFromBank(control, nivel, seenIds);
+        if (banked) return banked;
+      }
+      return generateDynamic(control, nivel, opts);
+    }
+    throw new Error(`nivel ${nivel} generation not implemented`);
   }
 
-  return generateNivel2Dynamic(control);
-}
-
-async function generateForControl(control, nivel, opts) {
-  if (nivel === 1) {
-    return generateNivel1(control, opts);
-  }
-  if (nivel === 2) {
-    return generateNivel2(control, opts);
-  }
-  throw new Error(`nivel ${nivel} generation not implemented`);
-}
-
-module.exports = { generateForControl };
+  return { generateForControl, selectFromBank, generateDynamic };
+};

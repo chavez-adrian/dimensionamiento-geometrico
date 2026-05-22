@@ -69,6 +69,60 @@ Usuario único: `'adrian'`. No hay autenticación.
 | Vista glosario — tarjeta + filtro capa | ✅ |
 | Nivel 3 end-to-end | 🔒 bloqueado por CIDESI |
 
+## Arquitectura de módulos (tras refactor #14–#17)
+
+### Constantes del dominio
+
+`src/domain.js` es la fuente canónica de constantes:
+- `GEOMETRIC_CONTROLS` — los 5 controles geométricos
+- `PREREQUISITE` — `'Fundamentos'`
+- `ALL_CONTROLS` — `[PREREQUISITE, ...GEOMETRIC_CONTROLS]` (6 elementos)
+- `USER_ID` — `'adrian'`
+
+### Factory pattern
+
+`session-orchestrator.js` y `exercise-generator.js` son ahora factory functions. `server.js` crea el `StateStore` y lo pasa a ambos:
+
+```js
+const stateStore = new StateStore(process.env.DATABASE_URL);
+const { nextExercise, submitAnswer } = require('./session-orchestrator')(stateStore);
+```
+
+### StateStore como único seam de DB
+
+`StateStore` es el único módulo que habla con Postgres. Métodos públicos:
+- `loadState(userId)` — rows crudas
+- `saveState(userId, control, nivel, cell)` — UPDATE
+- `loadKnowledgeState(userId)` → estado como mapa anidado `{ control: { nivel: cell } }`
+- `saveCell(userId, control, nivel, cell)` → UPDATE
+- `getSeenBankIds(userId, control, nivel)` → array de IDs
+- `getSeenQuestions(userId, control, nivel)` → array de strings
+- `getUnseenNivel2(control, nivel, seenIds)` → row del banco o null
+
+### ExerciseGenerator: selectFromBank vs generateDynamic
+
+Dentro de `exercise-generator.js`:
+- `selectFromBank(control, nivel, seenIds)` — banco sin Claude
+- `generateDynamic(control, nivel, opts)` — Claude Haiku, sin DB
+- `generateForControl` compone ambas (banco primero, dinámico como fallback)
+
+### computeUnlocks
+
+`computeUnlocks(state, control, nivel)` reemplaza las antiguas `shouldUnlockNext` y `getFanOutControls`:
+
+```js
+{ nextNivel: number | null, fanOut: string[] }
+```
+
+### Tests con stateStore fake
+
+Para testear orchestrator o generator sin Neon:
+
+```js
+const fakeStore = { getUnseenNivel2: async () => myFakeRow, ... };
+const gen = createGenerator(fakeStore);
+```
+
 ## Convenciones de desarrollo
 
 - **TDD estricto** — escribir tests en RED antes de implementar (ver `/tdd` skill)

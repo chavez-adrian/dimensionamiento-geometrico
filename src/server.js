@@ -1,15 +1,16 @@
 require('dotenv').config();
 const express = require('express');
-const { Pool } = require('pg');
-const { nextExercise, submitAnswer } = require('./session-orchestrator');
+const { GEOMETRIC_CONTROLS: CONTROLS } = require('./domain');
+const StateStore = require('./state-store');
+const createOrchestrator = require('./session-orchestrator');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const stateStore = new StateStore(process.env.DATABASE_URL);
+const { nextExercise, submitAnswer } = createOrchestrator(stateStore);
 
-const CONTROLS = ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad'];
 const LEVELS = [
   { num: 1, label: 'Vocabulario' },
   { num: 2, label: 'Concepto Mecanico' },
@@ -21,7 +22,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/api/health', async (req, res) => {
   try {
-    await pool.query('SELECT 1');
+    await stateStore.pool.query('SELECT 1');
     res.json({ status: 'ok', db: 'connected' });
   } catch (err) {
     res.status(500).json({ status: 'error', db: 'disconnected', message: err.message });
@@ -30,7 +31,7 @@ app.get('/api/health', async (req, res) => {
 
 app.get('/api/state', async (req, res) => {
   try {
-    const { rows } = await pool.query(
+    const { rows } = await stateStore.pool.query(
       'SELECT control, nivel, mastered, unlocked, attempts, correct_streak FROM knowledge_state WHERE user_id = $1',
       ['adrian']
     );
@@ -72,7 +73,7 @@ app.post('/api/exercise/evaluate', async (req, res) => {
 
 app.get('/api/glossary/layers', async (req, res) => {
   try {
-    const { rows } = await pool.query(
+    const { rows } = await stateStore.pool.query(
       'SELECT layer_id, layer_name, MIN(pedagogical_order) as first_order FROM concept_glossary GROUP BY layer_id, layer_name ORDER BY first_order'
     );
     res.json(rows);
@@ -87,7 +88,7 @@ app.get('/api/glossary', async (req, res) => {
     return res.status(404).json({ error: 'Not found' });
   }
   try {
-    const { rows } = await pool.query(
+    const { rows } = await stateStore.pool.query(
       'SELECT term, english_name, abbreviation, symbol, definition, coloquial, example, layer_id, layer_name, pedagogical_order FROM concept_glossary WHERE pedagogical_order = $1',
       [order]
     );

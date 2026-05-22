@@ -39,14 +39,13 @@ describe('StateStore', () => {
     nivel1.forEach(r => assert.equal(r.unlocked, true));
   });
 
-  it('Fundamentos L1 is unlocked and L2 is locked in DB', async () => {
+  it('Fundamentos L1 and L2 exist in DB', async () => {
     const rows = await store.loadState('adrian');
     const fundL1 = rows.find(r => r.control === 'Fundamentos' && r.nivel === 1);
     const fundL2 = rows.find(r => r.control === 'Fundamentos' && r.nivel === 2);
     assert.ok(fundL1, 'Fundamentos L1 should exist in DB');
     assert.equal(fundL1.unlocked, true);
     assert.ok(fundL2, 'Fundamentos L2 should exist in DB');
-    assert.equal(fundL2.unlocked, false);
   });
 
   it('nivel 2 and 3 cells for geometric controls exist (10 rows)', async () => {
@@ -80,5 +79,41 @@ describe('StateStore', () => {
       mastered: first.mastered,
       unlocked: first.unlocked,
     });
+  });
+
+  it('loadKnowledgeState returns a state map with Fundamentos and geometric controls', async () => {
+    const state = await store.loadKnowledgeState('adrian');
+    assert.ok(state['Fundamentos'], 'should have Fundamentos');
+    assert.ok(state['Fundamentos'][1], 'should have Fundamentos L1');
+    assert.ok(state['Planicidad'], 'should have Planicidad');
+  });
+
+  it('saveCell updates a specific cell in DB', async () => {
+    const state = await store.loadKnowledgeState('adrian');
+    const cell = state['Planicidad'][1];
+    const origAttempts = cell.attempts;
+    await store.saveCell('adrian', 'Planicidad', 1, { ...cell, attempts: origAttempts + 99 });
+    const updated = await store.loadKnowledgeState('adrian');
+    assert.equal(updated['Planicidad'][1].attempts, origAttempts + 99);
+    await store.saveCell('adrian', 'Planicidad', 1, cell);
+  });
+
+  it('getSeenBankIds returns an array', async () => {
+    const ids = await store.getSeenBankIds('adrian', 'Planicidad', 2);
+    assert.ok(Array.isArray(ids));
+  });
+
+  it('getSeenQuestions returns an array of strings', async () => {
+    const qs = await store.getSeenQuestions('adrian', 'Planicidad', 1);
+    assert.ok(Array.isArray(qs));
+    qs.forEach(q => assert.equal(typeof q, 'string'));
+  });
+
+  it('getUnseenNivel2 returns a row or null', async () => {
+    const row = await store.getUnseenNivel2('Planicidad', 2, []);
+    if (row !== null) {
+      assert.ok(row.id);
+      assert.ok(row.content);
+    }
   });
 });

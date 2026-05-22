@@ -4,9 +4,28 @@ const {
   getInitialState,
   processAnswer,
   checkMastery,
-  shouldUnlockNext,
-  getFanOutControls,
+  computeUnlocks,
 } = require('../src/knowledge-state-engine');
+const domain = require('../src/domain');
+
+describe('domain', () => {
+  it('exports GEOMETRIC_CONTROLS with 5 controls', () => {
+    assert.deepEqual(domain.GEOMETRIC_CONTROLS, ['Planicidad', 'Paralelismo', 'Perpendicularidad', 'Posicion', 'Cilindricidad']);
+  });
+
+  it('exports PREREQUISITE as Fundamentos', () => {
+    assert.equal(domain.PREREQUISITE, 'Fundamentos');
+  });
+
+  it('exports ALL_CONTROLS with 6 elements (Fundamentos + 5 controls)', () => {
+    assert.equal(domain.ALL_CONTROLS.length, 6);
+    assert.equal(domain.ALL_CONTROLS[0], 'Fundamentos');
+  });
+
+  it('exports USER_ID as adrian', () => {
+    assert.equal(domain.USER_ID, 'adrian');
+  });
+});
 
 describe('KnowledgeStateEngine', () => {
   describe('getInitialState', () => {
@@ -165,61 +184,61 @@ describe('KnowledgeStateEngine', () => {
     });
   });
 
-  describe('getFanOutControls', () => {
-    it('returns 5 geometric controls when Fundamentos L2 is mastered', () => {
-      const state = getInitialState();
-      state['Fundamentos'][2].mastered = true;
-      const fanOut = getFanOutControls(state, 'Fundamentos', 2);
-      assert.deepEqual(fanOut.sort(), ['Cilindricidad', 'Paralelismo', 'Perpendicularidad', 'Planicidad', 'Posicion'].sort());
-    });
-
-    it('returns empty array when Fundamentos L2 is not mastered', () => {
-      const state = getInitialState();
-      state['Fundamentos'][2].mastered = false;
-      const fanOut = getFanOutControls(state, 'Fundamentos', 2);
-      assert.deepEqual(fanOut, []);
-    });
-
-    it('returns empty array for non-Fundamentos control', () => {
-      const state = getInitialState();
-      state['Planicidad'][1].mastered = true;
-      const fanOut = getFanOutControls(state, 'Planicidad', 1);
-      assert.deepEqual(fanOut, []);
-    });
-  });
-
-  describe('shouldUnlockNext', () => {
-    it('nivel 2 is unlocked when nivel 1 is mastered', () => {
+  describe('computeUnlocks', () => {
+    it('L1 dominated geometric control returns nextNivel:2 fanOut:[]', () => {
       let state = getInitialState();
       for (let i = 0; i < 4; i++) {
         state = processAnswer(state, 'Planicidad', 1, true);
       }
-      assert.equal(shouldUnlockNext(state, 'Planicidad', 1), true);
+      assert.deepEqual(computeUnlocks(state, 'Planicidad', 1), { nextNivel: 2, fanOut: [] });
     });
 
-    it('nivel 2 is not unlocked when nivel 1 is not mastered', () => {
-      let state = getInitialState();
-      for (let i = 0; i < 3; i++) {
-        state = processAnswer(state, 'Planicidad', 1, true);
-      }
-      assert.equal(shouldUnlockNext(state, 'Planicidad', 1), false);
-    });
-
-    it('nivel 3 is NOT unlocked when only nivel 1 is mastered', () => {
-      let state = getInitialState();
-      for (let i = 0; i < 4; i++) {
-        state = processAnswer(state, 'Planicidad', 1, true);
-      }
-      assert.equal(shouldUnlockNext(state, 'Planicidad', 2), false);
-    });
-
-    it('nivel 3 is unlocked when nivel 2 is mastered', () => {
+    it('L2 dominated geometric control returns nextNivel:3 fanOut:[]', () => {
       let state = getInitialState();
       state['Planicidad'][2].unlocked = true;
       for (let i = 0; i < 4; i++) {
         state = processAnswer(state, 'Planicidad', 2, true);
       }
-      assert.equal(shouldUnlockNext(state, 'Planicidad', 2), true);
+      assert.deepEqual(computeUnlocks(state, 'Planicidad', 2), { nextNivel: 3, fanOut: [] });
+    });
+
+    it('L3 dominated geometric control returns nextNivel:null fanOut:[]', () => {
+      let state = getInitialState();
+      state['Planicidad'][3].unlocked = true;
+      for (let i = 0; i < 4; i++) {
+        state = processAnswer(state, 'Planicidad', 3, true);
+      }
+      assert.deepEqual(computeUnlocks(state, 'Planicidad', 3), { nextNivel: null, fanOut: [] });
+    });
+
+    it('L1 NOT dominated geometric control returns nextNivel:null fanOut:[]', () => {
+      let state = getInitialState();
+      for (let i = 0; i < 3; i++) {
+        state = processAnswer(state, 'Planicidad', 1, true);
+      }
+      assert.deepEqual(computeUnlocks(state, 'Planicidad', 1), { nextNivel: null, fanOut: [] });
+    });
+
+    it('Fundamentos L2 dominated returns nextNivel:null fanOut:[5 controls]', () => {
+      const state = getInitialState();
+      state['Fundamentos'][2].mastered = true;
+      const result = computeUnlocks(state, 'Fundamentos', 2);
+      assert.equal(result.nextNivel, null);
+      assert.deepEqual(result.fanOut.sort(), ['Cilindricidad', 'Paralelismo', 'Perpendicularidad', 'Planicidad', 'Posicion'].sort());
+    });
+
+    it('Fundamentos L2 NOT dominated returns nextNivel:null fanOut:[]', () => {
+      const state = getInitialState();
+      state['Fundamentos'][2].mastered = false;
+      assert.deepEqual(computeUnlocks(state, 'Fundamentos', 2), { nextNivel: null, fanOut: [] });
+    });
+
+    it('Fundamentos L1 dominated returns nextNivel:2 fanOut:[]', () => {
+      let state = getInitialState();
+      for (let i = 0; i < 4; i++) {
+        state = processAnswer(state, 'Fundamentos', 1, true);
+      }
+      assert.deepEqual(computeUnlocks(state, 'Fundamentos', 1), { nextNivel: 2, fanOut: [] });
     });
   });
 });
