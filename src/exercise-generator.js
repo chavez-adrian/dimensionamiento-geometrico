@@ -8,6 +8,16 @@ const fs = require('fs');
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
+function shuffleOptions(options, correctIndex) {
+  const correct = options[correctIndex];
+  const shuffled = [...options];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return { options: shuffled, correct_index: shuffled.indexOf(correct) };
+}
+
 function loadGlossary(control) {
   try {
     const content = JSON.parse(
@@ -107,11 +117,12 @@ Reglas:
   if (!jsonMatch) throw new Error('No JSON in response');
   const parsed = JSON.parse(jsonMatch[0]);
 
+  const shuffled = shuffleOptions(parsed.options, parsed.correct_index);
   return {
     id: uuidv4(),
     question: parsed.question,
-    options: parsed.options,
-    correct_index: parsed.correct_index,
+    options: shuffled.options,
+    correct_index: shuffled.correct_index,
     explanation: parsed.explanation,
   };
 }
@@ -174,11 +185,12 @@ Reglas:
   if (!jsonMatch) throw new Error('No JSON in response');
   const parsed = JSON.parse(jsonMatch[0]);
 
+  const shuffled = shuffleOptions(parsed.options, parsed.correct_index);
   return {
     id: uuidv4(),
     question: parsed.question,
-    options: parsed.options,
-    correct_index: parsed.correct_index,
+    options: shuffled.options,
+    correct_index: shuffled.correct_index,
     explanation: parsed.explanation,
   };
 }
@@ -190,11 +202,12 @@ async function generateNivel2(control, opts) {
   if (!forceDynamic) {
     const bankRow = await getUnseenNivel2FromBank(control, seenIds);
     if (bankRow) {
+      const shuffled = shuffleOptions(bankRow.content.options, bankRow.content.correct_index);
       return {
         id: uuidv4(),
         question: bankRow.content.question,
-        options: bankRow.content.options,
-        correct_index: bankRow.content.correct_index,
+        options: shuffled.options,
+        correct_index: shuffled.correct_index,
         explanation: bankRow.content.explanation,
         source: 'banco',
         bank_id: bankRow.id,
