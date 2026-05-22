@@ -31,6 +31,21 @@ async function migrate() {
     `);
 
     await client.query(`
+      CREATE TABLE IF NOT EXISTS concept_glossary (
+        id                SERIAL PRIMARY KEY,
+        term              TEXT NOT NULL,
+        pedagogical_order INT NOT NULL,
+        layer_id          TEXT NOT NULL,
+        layer_name        TEXT NOT NULL,
+        definition        TEXT,
+        coloquial         TEXT,
+        example           TEXT,
+        created_at        TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(term)
+      )
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS exercise_bank (
         id           SERIAL PRIMARY KEY,
         control      TEXT,
