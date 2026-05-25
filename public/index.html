@@ -62,6 +62,8 @@
     .cell.in-progress { background: #451a03; border: 1px solid #d97706; color: #fcd34d; cursor: pointer; }
     .cell.in-progress:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217,119,6,0.3); }
     .cell.mastered { background: #4caf50; border: 1px solid #388e3c; color: #fff; }
+    .cell.lesson-required { background: #451a03; border: 2px solid #f59e0b; color: #fcd34d; cursor: pointer; }
+    .cell.lesson-required:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
     .legend { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.5rem; font-size: 0.75rem; flex-wrap: wrap; }
     .legend-item { display: flex; align-items: center; gap: 0.4rem; }
     .dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -69,6 +71,7 @@
     .dot.unlocked { background: #2563eb; }
     .dot.in-progress { background: #d97706; }
     .dot.mastered { background: #4caf50; }
+    .dot.lesson-required { background: #d97706; border: 2px solid #f59e0b; }
 
     /* EXERCISE VIEW */
     #exercise-view { display: none; max-width: 640px; margin: 0 auto; }
@@ -171,6 +174,50 @@
     .gl-nav-btn:hover:not(:disabled) { border-color: #2563eb; color: #93c5fd; }
     .gl-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
     .gl-loading { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem; }
+
+    /* LESSON VIEW */
+    #lesson-view { display: none; max-width: 760px; margin: 0 auto; }
+    .lesson-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .lesson-back { background: none; border: 1px solid #334155; color: #94a3b8; padding: 0.4rem 0.75rem; border-radius: 0.375rem; cursor: pointer; font-size: 0.8rem; }
+    .lesson-back:hover { border-color: #64748b; color: #e2e8f0; }
+    .lesson-title { font-size: 1rem; color: #94a3b8; }
+    .lesson-body { background: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; color: #cbd5e1; line-height: 1.7; font-size: 0.95rem; min-height: 200px; }
+    .lesson-body h1, .lesson-body h2, .lesson-body h3 { color: #f8fafc; margin: 1rem 0 0.5rem; }
+    .lesson-body p { margin-bottom: 0.75rem; }
+    .lesson-body ul, .lesson-body ol { margin: 0.5rem 0 0.75rem 1.5rem; }
+    .lesson-body li { margin-bottom: 0.25rem; }
+    .lesson-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .lesson-body th, .lesson-body td { border: 1px solid #334155; padding: 0.5rem 0.75rem; font-size: 0.875rem; }
+    .lesson-body th { background: #0f172a; color: #94a3b8; }
+    .lesson-sentinel { height: 1px; }
+    .lesson-complete-btn {
+      background: #d97706;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+    .lesson-complete-btn:hover:not(:disabled) { background: #b45309; }
+    .lesson-complete-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+    .lesson-scroll-hint { text-align: center; color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem; }
+
+    /* BYPASS MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.visible { display: flex; }
+    .modal-box { background: #1e293b; border: 1px solid #d97706; border-radius: 0.75rem; padding: 1.5rem; max-width: 420px; width: 90%; }
+    .modal-title { font-size: 1rem; font-weight: 700; color: #fcd34d; margin-bottom: 0.75rem; }
+    .modal-body { font-size: 0.875rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 1.25rem; }
+    .modal-actions { display: flex; gap: 0.75rem; }
+    .modal-btn { flex: 1; padding: 0.6rem 1rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; }
+    .modal-btn.primary { background: #d97706; color: white; }
+    .modal-btn.primary:hover { background: #b45309; }
+    .modal-btn.secondary { background: #334155; color: #94a3b8; }
+    .modal-btn.secondary:hover { background: #475569; color: #e2e8f0; }
   </style>
 </head>
 <body>
@@ -204,6 +251,7 @@
       <div class="legend-item"><div class="dot unlocked"></div> Disponible</div>
       <div class="legend-item"><div class="dot in-progress"></div> En progreso</div>
       <div class="legend-item"><div class="dot mastered"></div> Dominado</div>
+      <div class="legend-item"><div class="dot lesson-required"></div> Leccion pendiente</div>
     </div>
   </div>
 
@@ -228,6 +276,35 @@
     <div class="fb-streak" id="fb-streak"></div>
     <div id="fb-unlock" style="display:none" class="fb-unlock-badge"></div>
     <button class="fb-continue" onclick="continueExercise()">Continuar practicando</button>
+  </div>
+
+  <!-- LESSON VIEW -->
+  <div id="lesson-view">
+    <div class="lesson-header">
+      <button class="lesson-back" onclick="closeLessonView()">&#8592; Volver</button>
+      <span class="lesson-title" id="lesson-view-title"></span>
+    </div>
+    <div class="lesson-body" id="lesson-body">
+      <div class="loading">Cargando leccion...</div>
+    </div>
+    <p class="lesson-scroll-hint" id="lesson-scroll-hint">Lee la leccion completa para continuar</p>
+    <button class="lesson-complete-btn" id="lesson-complete-btn" disabled onclick="completeLesson()">
+      He leido esta leccion — ir al ejercicio
+    </button>
+  </div>
+
+  <!-- BYPASS MODAL -->
+  <div class="modal-overlay" id="bypass-modal">
+    <div class="modal-box">
+      <div class="modal-title">Leccion pendiente</div>
+      <div class="modal-body" id="bypass-modal-body">
+        Tienes una leccion pendiente para esta celda. Se recomienda leerla antes de practicar.
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="openLessonFromModal()">Ver leccion</button>
+        <button class="modal-btn secondary" onclick="bypassLesson()">Saltar e ir al ejercicio</button>
+      </div>
+    </div>
   </div>
 
   <!-- GLOSSARY VIEW -->
@@ -300,6 +377,8 @@
         cls += 'locked';
       } else if (cellData.mastered) {
         cls += 'mastered';
+      } else if (cellData.lesson_required) {
+        cls += 'lesson-required';
       } else if (cellData.attempts > 0) {
         cls += 'in-progress';
       } else {
@@ -318,6 +397,8 @@
         statusSpan.textContent = '🔒';
       } else if (cellData.mastered) {
         statusSpan.textContent = '✓';
+      } else if (cellData.lesson_required) {
+        statusSpan.textContent = '📚';
       } else {
         statusSpan.textContent = cellData.correct_streak;
       }
@@ -325,7 +406,11 @@
 
       div.onclick = null;
       if (cellData.unlocked && !cellData.mastered && control !== null) {
-        div.onclick = () => startExercise(control, levelNum);
+        if (cellData.lesson_required) {
+          div.onclick = () => requestLesson(cellData.lesson_required, control, levelNum);
+        } else {
+          div.onclick = () => startExercise(control, levelNum);
+        }
       }
     }
 
@@ -368,6 +453,8 @@
       document.getElementById('exercise-view').style.display = 'none';
       document.getElementById('feedback-view').style.display = 'none';
       document.getElementById('glossary-view').style.display = 'none';
+      document.getElementById('lesson-view').style.display = 'none';
+      document.getElementById('bypass-modal').classList.remove('visible');
       loadState().then(renderGrid);
     }
 
@@ -494,6 +581,109 @@
       }
     }
 
+    // --- LESSONS ---
+
+    let pendingLessonId = null;
+    let pendingControl = null;
+    let pendingNivel = null;
+    let lessonScrollObserver = null;
+
+    function requestLesson(lessonId, control, nivel) {
+      pendingLessonId = lessonId;
+      pendingControl = control;
+      pendingNivel = nivel;
+      document.getElementById('bypass-modal').classList.add('visible');
+    }
+
+    function openLessonFromModal() {
+      document.getElementById('bypass-modal').classList.remove('visible');
+      openLessonView(pendingLessonId, pendingControl, pendingNivel);
+    }
+
+    function bypassLesson() {
+      document.getElementById('bypass-modal').classList.remove('visible');
+      startExercise(pendingControl, pendingNivel);
+    }
+
+    function closeLessonView() {
+      if (lessonScrollObserver) {
+        lessonScrollObserver.disconnect();
+        lessonScrollObserver = null;
+      }
+      showGrid();
+    }
+
+    async function openLessonView(lessonId, control, nivel) {
+      pendingLessonId = lessonId;
+      pendingControl = control;
+      pendingNivel = nivel;
+
+      document.getElementById('grid-view').style.display = 'none';
+      document.getElementById('exercise-view').style.display = 'none';
+      document.getElementById('feedback-view').style.display = 'none';
+      document.getElementById('glossary-view').style.display = 'none';
+      document.getElementById('lesson-view').style.display = 'block';
+
+      const completeBtn = document.getElementById('lesson-complete-btn');
+      const scrollHint = document.getElementById('lesson-scroll-hint');
+      completeBtn.disabled = true;
+      scrollHint.style.display = 'block';
+
+      const bodyEl = document.getElementById('lesson-body');
+      bodyEl.innerHTML = '<div class="loading">Cargando leccion...</div>';
+
+      const res = await fetch(`/lessons/${lessonId}.html`);
+      if (!res.ok) {
+        bodyEl.innerHTML = '<p style="color:#fca5a5">El contenido de esta leccion aun no esta disponible. Puedes practicar el ejercicio directamente.</p><div class="lesson-sentinel"></div>';
+        completeBtn.disabled = false;
+        completeBtn.textContent = 'Marcar como leido — ir al ejercicio';
+        scrollHint.style.display = 'none';
+      } else {
+        const html = await res.text();
+        bodyEl.innerHTML = html + '<div class="lesson-sentinel"></div>';
+      }
+
+      document.getElementById('lesson-view-title').textContent = lessonId.replace(/-/g, ' ');
+
+      if (lessonScrollObserver) lessonScrollObserver.disconnect();
+      const sentinel = bodyEl.querySelector('.lesson-sentinel');
+      lessonScrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            completeBtn.disabled = false;
+            scrollHint.style.display = 'none';
+            lessonScrollObserver.disconnect();
+            lessonScrollObserver = null;
+          }
+        });
+      }, { threshold: 1.0 });
+      lessonScrollObserver.observe(sentinel);
+    }
+
+    async function completeLesson() {
+      const lessonId = pendingLessonId;
+      const control = pendingControl;
+      const nivel = pendingNivel;
+      const btn = document.getElementById('lesson-complete-btn');
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
+      try {
+        await fetch(`/api/lesson/${lessonId}/complete`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+        await loadState();
+        document.getElementById('lesson-view').style.display = 'none';
+        if (lessonScrollObserver) { lessonScrollObserver.disconnect(); lessonScrollObserver = null; }
+        if (control && nivel) {
+          startExercise(control, nivel);
+        } else {
+          showGrid();
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'He leido esta leccion — ir al ejercicio';
+        alert('Error al guardar: ' + err.message);
+      }
+    }
+
     showGrid();
 
     // --- GLOSSARY ---
@@ -514,6 +704,8 @@
       document.getElementById('grid-view').style.display = 'none';
       document.getElementById('exercise-view').style.display = 'none';
       document.getElementById('feedback-view').style.display = 'none';
+      document.getElementById('lesson-view').style.display = 'none';
+      document.getElementById('bypass-modal').classList.remove('visible');
       document.getElementById('glossary-view').style.display = 'block';
       if (glLayers.length === 0) {
         await loadGlLayers();
