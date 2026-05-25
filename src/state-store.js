@@ -89,6 +89,29 @@ class StateStore {
     const { rows } = await this.pool.query(query, params);
     return rows[0] || null;
   }
+
+  async getCompletedLessons(userId) {
+    const { rows } = await this.pool.query(
+      'SELECT lesson_id FROM lesson_completions WHERE user_id = $1',
+      [userId]
+    );
+    return rows.map(r => r.lesson_id);
+  }
+
+  async isLessonCompleted(userId, lessonId) {
+    const { rows } = await this.pool.query(
+      'SELECT 1 FROM lesson_completions WHERE user_id = $1 AND lesson_id = $2',
+      [userId, lessonId]
+    );
+    return rows.length > 0;
+  }
+
+  async completeLesson(userId, lessonId) {
+    await this.pool.query(
+      'INSERT INTO lesson_completions (user_id, lesson_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+      [userId, lessonId]
+    );
+  }
 }
 
 module.exports = StateStore;

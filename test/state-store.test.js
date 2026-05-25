@@ -117,3 +117,57 @@ describe('StateStore', () => {
     }
   });
 });
+
+describe('StateStore lesson methods', () => {
+  let store;
+  const TEST_USER = 'test-lesson-user';
+  const TEST_LESSON = 'test-lesson-id';
+
+  before(async () => {
+    store = new StateStore(process.env.DATABASE_URL);
+    await store.connect();
+    await store.pool.query(
+      'DELETE FROM lesson_completions WHERE user_id = $1',
+      [TEST_USER]
+    );
+  });
+
+  after(async () => {
+    await store.pool.query(
+      'DELETE FROM lesson_completions WHERE user_id = $1',
+      [TEST_USER]
+    );
+    await store.disconnect();
+  });
+
+  it('isLessonCompleted returns false when no record exists', async () => {
+    const result = await store.isLessonCompleted(TEST_USER, TEST_LESSON);
+    assert.equal(result, false);
+  });
+
+  it('getCompletedLessons returns empty array initially', async () => {
+    const lessons = await store.getCompletedLessons(TEST_USER);
+    assert.ok(Array.isArray(lessons));
+    assert.equal(lessons.length, 0);
+  });
+
+  it('completeLesson persists the completion', async () => {
+    await store.completeLesson(TEST_USER, TEST_LESSON);
+    const result = await store.isLessonCompleted(TEST_USER, TEST_LESSON);
+    assert.equal(result, true);
+  });
+
+  it('completeLesson is idempotent', async () => {
+    await store.completeLesson(TEST_USER, TEST_LESSON);
+    await store.completeLesson(TEST_USER, TEST_LESSON);
+    const lessons = await store.getCompletedLessons(TEST_USER);
+    assert.equal(lessons.length, 1);
+  });
+
+  it('getCompletedLessons returns array of lesson_ids', async () => {
+    const lessons = await store.getCompletedLessons(TEST_USER);
+    assert.ok(Array.isArray(lessons));
+    assert.ok(lessons.includes(TEST_LESSON));
+    lessons.forEach(id => assert.equal(typeof id, 'string'));
+  });
+});
