@@ -107,10 +107,13 @@ class StateStore {
   }
 
   async completeLesson(userId, lessonId) {
-    await this.pool.query(
-      'INSERT INTO lesson_completions (user_id, lesson_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+    const { rows } = await this.pool.query(
+      `INSERT INTO lesson_completions (user_id, lesson_id) VALUES ($1, $2)
+       ON CONFLICT (user_id, lesson_id) DO UPDATE SET completed_at = lesson_completions.completed_at
+       RETURNING lesson_id, completed_at`,
       [userId, lessonId]
     );
+    return rows[0];
   }
 }
 

@@ -142,8 +142,8 @@ app.post('/api/lesson/:id/complete', async (req, res) => {
     return res.status(404).json({ error: 'lesson not found' });
   }
   try {
-    await stateStore.completeLesson('adrian', lessonId);
-    res.json({ ok: true });
+    const row = await stateStore.completeLesson('adrian', lessonId);
+    res.json({ lesson_id: row.lesson_id, completed_at: row.completed_at });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
