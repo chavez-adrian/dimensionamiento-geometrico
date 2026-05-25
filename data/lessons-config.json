@@ -1,0 +1,44 @@
+[
+  {
+    "lesson_id": "fundamentos-1",
+    "title": "Fundamentos I — Dimensionamiento, Tolerancias y el origen de GD&T",
+    "control": "Fundamentos",
+    "nivel": 1
+  },
+  {
+    "lesson_id": "fundamentos-2",
+    "title": "Fundamentos II — Estructura y Reglas GD&T",
+    "control": "Fundamentos",
+    "nivel": 2
+  },
+  {
+    "lesson_id": "planicidad",
+    "title": "Planicidad",
+    "control": "Planicidad",
+    "nivel": 1
+  },
+  {
+    "lesson_id": "cilindricidad",
+    "title": "Cilindricidad",
+    "control": "Cilindricidad",
+    "nivel": 1
+  },
+  {
+    "lesson_id": "paralelismo",
+    "title": "Paralelismo y Datum",
+    "control": "Paralelismo",
+    "nivel": 1
+  },
+  {
+    "lesson_id": "perpendicularidad",
+    "title": "Perpendicularidad",
+    "control": "Perpendicularidad",
+    "nivel": 1
+  },
+  {
+    "lesson_id": "posicion",
+    "title": "Posicion y Bonus Tolerance",
+    "control": "Posicion",
+    "nivel": 1
+  }
+]
