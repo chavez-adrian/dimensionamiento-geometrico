@@ -16,6 +16,33 @@ function getJSON(url) {
   });
 }
 
+function postJSON(url, payload) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify(payload);
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    };
+    const u = new URL(url);
+    options.hostname = u.hostname;
+    options.port = u.port;
+    options.path = u.pathname;
+    const req = http.request(options, (res) => {
+      let body = '';
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        resolve({ status: res.statusCode, body: JSON.parse(body) });
+      });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
 describe('GET /api/glossary', () => {
   let server;
   let port;
@@ -136,5 +163,84 @@ describe('GET /api/state', () => {
     const { body } = await getJSON(`http://localhost:${port}/api/state`);
     const keys = Object.keys(body.state);
     assert.equal(keys.length, 17);
+  });
+
+  it('each cell has lesson_required field', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/state`);
+    Object.entries(body.state).forEach(([key, cell]) => {
+      assert.ok('lesson_required' in cell, `${key} should have lesson_required`);
+    });
+  });
+});
+
+describe('GET /api/lessons', () => {
+  let server;
+  let port;
+
+  before(() => new Promise((resolve) => {
+    server = app.listen(0, () => {
+      port = server.address().port;
+      resolve();
+    });
+  }));
+
+  after(() => new Promise((resolve) => {
+    server.close(resolve);
+  }));
+
+  it('returns 200 with array of 7 lessons', async () => {
+    const { status, body } = await getJSON(`http://localhost:${port}/api/lessons`);
+    assert.equal(status, 200);
+    assert.ok(Array.isArray(body));
+    assert.equal(body.length, 7);
+  });
+
+  it('each lesson has required fields', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/lessons`);
+    body.forEach(lesson => {
+      assert.ok('lesson_id' in lesson);
+      assert.ok('title' in lesson);
+      assert.ok('control' in lesson);
+      assert.ok('nivel' in lesson);
+      assert.ok('completed' in lesson);
+    });
+  });
+
+  it('completed field is boolean', async () => {
+    const { body } = await getJSON(`http://localhost:${port}/api/lessons`);
+    body.forEach(lesson => {
+      assert.equal(typeof lesson.completed, 'boolean');
+    });
+  });
+});
+
+describe('POST /api/lesson/:id/complete', () => {
+  let server;
+  let port;
+
+  before(() => new Promise((resolve) => {
+    server = app.listen(0, () => {
+      port = server.address().port;
+      resolve();
+    });
+  }));
+
+  after(() => new Promise((resolve) => {
+    server.close(resolve);
+  }));
+
+  it('returns 200 on first call', async () => {
+    const { status } = await postJSON(`http://localhost:${port}/api/lesson/planicidad/complete`, {});
+    assert.equal(status, 200);
+  });
+
+  it('returns 200 on second call (idempotent)', async () => {
+    const { status } = await postJSON(`http://localhost:${port}/api/lesson/planicidad/complete`, {});
+    assert.equal(status, 200);
+  });
+
+  it('returns 404 for unknown lesson_id', async () => {
+    const { status } = await postJSON(`http://localhost:${port}/api/lesson/inexistente/complete`, {});
+    assert.equal(status, 404);
   });
 });

@@ -1,9 +1,15 @@
 require('dotenv').config();
 const express = require('express');
+const fs = require('fs');
 const { GEOMETRIC_CONTROLS: CONTROLS } = require('./domain');
 const StateStore = require('./state-store');
 const createOrchestrator = require('./session-orchestrator');
 const path = require('path');
+
+const LESSONS_CONFIG = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../data/lessons-config.json'), 'utf8')
+);
+const LESSON_IDS = new Set(LESSONS_CONFIG.map(l => l.lesson_id));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,13 +37,25 @@ app.get('/api/health', async (req, res) => {
 
 app.get('/api/state', async (req, res) => {
   try {
-    const { rows } = await stateStore.pool.query(
-      'SELECT control, nivel, mastered, unlocked, attempts, correct_streak FROM knowledge_state WHERE user_id = $1',
-      ['adrian']
-    );
+    const [{ rows }, completedLessons] = await Promise.all([
+      stateStore.pool.query(
+        'SELECT control, nivel, mastered, unlocked, attempts, correct_streak FROM knowledge_state WHERE user_id = $1',
+        ['adrian']
+      ),
+      stateStore.getCompletedLessons('adrian'),
+    ]);
+    const completedSet = new Set(completedLessons);
+    const lessonByCell = {};
+    LESSONS_CONFIG.forEach(l => {
+      const key = `${l.control}:${l.nivel}`;
+      lessonByCell[key] = l.lesson_id;
+    });
     const stateMap = {};
     rows.forEach(r => {
-      stateMap[`${r.control}:${r.nivel}`] = r;
+      const key = `${r.control}:${r.nivel}`;
+      const lessonId = lessonByCell[key] || null;
+      const lesson_required = (lessonId && !completedSet.has(lessonId)) ? lessonId : null;
+      stateMap[key] = { ...r, lesson_required };
     });
     res.json({ state: stateMap });
   } catch (err) {
@@ -101,11 +119,48 @@ app.get('/api/glossary', async (req, res) => {
   }
 });
 
+app.get('/api/lessons', async (req, res) => {
+  try {
+    const completed = await stateStore.getCompletedLessons('adrian');
+    const completedSet = new Set(completed);
+    const lessons = LESSONS_CONFIG.map(l => ({
+      lesson_id: l.lesson_id,
+      title: l.title,
+      control: l.control,
+      nivel: l.nivel,
+      completed: completedSet.has(l.lesson_id),
+    }));
+    res.json(lessons);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/lesson/:id/complete', async (req, res) => {
+  const lessonId = req.params.id;
+  if (!LESSON_IDS.has(lessonId)) {
+    return res.status(404).json({ error: 'lesson not found' });
+  }
+  try {
+    await stateStore.completeLesson('adrian', lessonId);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 if (require.main === module) {
+  LESSONS_CONFIG.forEach(lesson => {
+    const htmlPath = path.join(__dirname, '../public/lessons', `${lesson.lesson_id}.html`);
+    if (!fs.existsSync(htmlPath)) {
+      console.warn(`[lessons] WARNING: missing HTML for lesson "${lesson.lesson_id}" at ${htmlPath}`);
+    }
+  });
+
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
