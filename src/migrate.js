@@ -60,6 +60,16 @@ async function migrate() {
       )
     `);
 
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS lesson_completions (
+        id           SERIAL PRIMARY KEY,
+        user_id      TEXT NOT NULL,
+        lesson_id    TEXT NOT NULL,
+        completed_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(user_id, lesson_id)
+      )
+    `);
+
     console.log('Migration complete');
   } finally {
     client.release();
