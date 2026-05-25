@@ -35,6 +35,16 @@ Nivel que evalúa la comprensión del comportamiento físico del Control mediant
 **Criterio de Decisión (Nivel 3)**:
 Nivel que evalúa la capacidad del estudiante de especificar el Control correcto, el datum y el valor de tolerancia para un componente real de troquel. Usa Ejercicios Anclados con respuesta abierta evaluada por Claude. Objetivo final del sistema.
 
+### Lecciones
+
+**Lección**:
+Unidad de instrucción pasiva que precede a un bloque de Ejercicios. Contiene la exposición conceptual (texto, símbolos GD&T, ejemplos) necesaria para que el estudiante pueda responder Ejercicios del bloque correspondiente. El sistema la registra como completada cuando el estudiante declara haberla leído — no hay verificación de comprensión. Prerequisito de la primera Celda de Conocimiento accesible en su bloque.
+_Evitar_: Módulo, clase, tutorial, contenido.
+
+**Completar una Lección**:
+Acción del estudiante de declarar que ha leído una Lección. El sistema registra la fecha y desbloquea el acceso al primer Nivel del bloque correspondiente. No implica evaluación.
+_Evitar_: Aprobar, pasar, terminar.
+
 ### Ejercicios
 
 **Ejercicio**:

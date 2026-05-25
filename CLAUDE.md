@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # dimensionamiento-geometrico
 
 Herramienta de aprendizaje adaptativo GD&T (ASME Y14.5-2018 (R2024)) para que Adrián Chávez domine la especificación de tolerancias geométricas aplicadas al diseño de troqueles de embutido de lámina de acero al carbono calibre 26 (Peltre Nacional SA de CV).
@@ -22,23 +26,41 @@ PDFs:    C:\Users\chave\Dropbox\PELTRE NACIONAL\2.0 PRODUCCIÓN\DOCUMENTACIÓN T
 .env:    C:\Users\chave\OneDrive\Documents\_Claude\dimensionamiento-geometrico\.env
 ```
 
-## Correr tests
+## Comandos
 
 ```powershell
-Set-Location "C:\Users\chave\OneDrive\Documents\_Claude\dimensionamiento-geometrico"
-& "C:\Program Files\nodejs\node.exe" --test test\knowledge-state-engine.test.js
-& "C:\Program Files\nodejs\node.exe" --test test\exercise-generator.test.js
-& "C:\Program Files\nodejs\node.exe" --test test\server.test.js
-```
+# Servidor local (puerto 3000)
+npm start
 
-Los tests de `exercise-generator` llaman a la API de Anthropic — son de integración y tardan ~30s.
+# Todos los tests (incluyendo integración con Anthropic API, ~30s)
+npm test
+
+# Tests individuales (sin API calls)
+& "C:\Program Files\nodejs\node.exe" --test test\knowledge-state-engine.test.js
+& "C:\Program Files\nodejs\node.exe" --test test\state-store.test.js
+& "C:\Program Files\nodejs\node.exe" --test test\server.test.js
+
+# Test de integración (llama a la API de Anthropic)
+& "C:\Program Files\nodejs\node.exe" --test test\exercise-generator.test.js
+
+# Migraciones y seeds
+npm run migrate        # CREATE TABLE IF NOT EXISTS (todas las tablas)
+npm run seed           # Seed knowledge_state para user 'adrian' (17 filas)
+npm run seed:nivel2    # Carga exercise-bank-seed.json en exercise_bank
+npm run seed:nivel3    # Carga exercise-bank-nivel3.json en exercise_bank
+```
 
 ## Schema Neon
 
 ```
 knowledge_state   PRIMARY KEY (user_id, control, nivel)
+                  attempts INT, correct_streak INT, mastered BOOL, unlocked BOOL, updated_at
+
 exercise_bank     id SERIAL PK, control, nivel, type, anchor, content JSONB, source, active
-exercise_sessions id SERIAL PK, user_id, control, nivel, question, answered_at
+                  source='curso_pdf' para banco L2; source='nivel3' para banco L3 (active=FALSE)
+
+exercise_sessions id SERIAL PK, user_id, control, nivel, question TEXT, answered_at
+
 concept_glossary  id SERIAL PK, term UNIQUE, pedagogical_order, layer_id, layer_name,
                   english_name, abbreviation, symbol, definition, coloquial, example
 ```
@@ -56,6 +78,11 @@ Usuario único: `'adrian'`. No hay autenticación.
 - Circularity → **Circularidad** (no "Redondez")
 - ASME Y14.5-**2018 (R2024)** (no "2024" a secas)
 
+**Niveles (labels canónicos):**
+- Nivel 1 → Vocabulario
+- Nivel 2 → Concepto Mecánico
+- Nivel 3 → Criterio de Decisión
+
 ## Estado actual del proyecto
 
 | Módulo | Estado |
@@ -71,6 +98,27 @@ Usuario único: `'adrian'`. No hay autenticación.
 
 ## Arquitectura de módulos (tras refactor #14–#17)
 
+### Flujo de una sesión de ejercicio
+
+```
+GET /api/exercise/next
+  → session-orchestrator.nextExercise()
+    → stateStore.getSeenBankIds / getSeenQuestions
+    → exercise-generator.generateForControl()
+      → nivel 1: generateNivel1() → Claude Haiku (prompt + data/course-content.json)
+      → nivel 2: selectFromBank() → banco exercise_bank, fallback generateDynamic() → Claude Haiku
+      → nivel 3: no implementado
+    → INSERT exercise_sessions (question text)
+
+POST /api/exercise/evaluate
+  → session-orchestrator.submitAnswer()
+    → answer-evaluator.evaluate() — pure fn: answerIndex === correct_index
+    → knowledge-state-engine.processAnswer() — pure fn, deep-copy state
+    → stateStore.saveCell() — persiste celda
+    → knowledge-state-engine.computeUnlocks() — pure fn, calcula desbloqueos
+    → stateStore.saveCell() para celdas desbloqueadas
+```
+
 ### Constantes del dominio
 
 `src/domain.js` es la fuente canónica de constantes:
@@ -79,9 +127,15 @@ Usuario único: `'adrian'`. No hay autenticación.
 - `ALL_CONTROLS` — `[PREREQUISITE, ...GEOMETRIC_CONTROLS]` (6 elementos)
 - `USER_ID` — `'adrian'`
 
+### Invariantes de dominio
+
+- **MASTERY_THRESHOLD = 4** — racha de 4 respuestas consecutivas correctas para dominar una celda (en `knowledge-state-engine.js`)
+- **Fan-out**: dominar Fundamentos L2 desbloquea L1 de los 5 controles geométricos simultáneamente
+- **Fundamentos solo tiene L1 y L2** — no existe Fundamentos L3
+
 ### Factory pattern
 
-`session-orchestrator.js` y `exercise-generator.js` son ahora factory functions. `server.js` crea el `StateStore` y lo pasa a ambos:
+`session-orchestrator.js` y `exercise-generator.js` son factory functions. `server.js` crea el `StateStore` y lo pasa a ambos:
 
 ```js
 const stateStore = new StateStore(process.env.DATABASE_URL);
@@ -95,8 +149,8 @@ const { nextExercise, submitAnswer } = require('./session-orchestrator')(stateSt
 - `saveState(userId, control, nivel, cell)` — UPDATE
 - `loadKnowledgeState(userId)` → estado como mapa anidado `{ control: { nivel: cell } }`
 - `saveCell(userId, control, nivel, cell)` → UPDATE
-- `getSeenBankIds(userId, control, nivel)` → array de IDs
-- `getSeenQuestions(userId, control, nivel)` → array de strings
+- `getSeenBankIds(userId, control, nivel)` → array de IDs (silencia errores con `.catch`)
+- `getSeenQuestions(userId, control, nivel)` → array de strings (últimas 10)
 - `getUnseenNivel2(control, nivel, seenIds)` → row del banco o null
 
 ### ExerciseGenerator: selectFromBank vs generateDynamic
@@ -105,6 +159,7 @@ Dentro de `exercise-generator.js`:
 - `selectFromBank(control, nivel, seenIds)` — banco sin Claude
 - `generateDynamic(control, nivel, opts)` — Claude Haiku, sin DB
 - `generateForControl` compone ambas (banco primero, dinámico como fallback)
+- `loadGlossary(control)` lee `data/course-content.json` para construir prompts
 
 ### computeUnlocks
 
@@ -112,6 +167,16 @@ Dentro de `exercise-generator.js`:
 
 ```js
 { nextNivel: number | null, fanOut: string[] }
+```
+
+### Archivos de datos
+
+```
+data/course-content.json    — glosario local por control (terminos, definicion, reglas)
+                              alimenta los prompts de generateNivel1() y generateDynamic()
+data/exercise-bank-seed.json — ejercicios L2 del banco (source='curso_pdf')
+data/exercise-bank-nivel3.json — ejercicios L3 del banco (source='nivel3', active=FALSE)
+public/index.html           — SPA frontend (vanilla JS, sin framework)
 ```
 
 ### Tests con stateStore fake
@@ -134,12 +199,19 @@ const gen = createGenerator(fakeStore);
 ## Scripts de mantenimiento
 
 ```
-src/migrate.js              — CREATE TABLE IF NOT EXISTS (todas las tablas)
-src/seed.js                 — Seed knowledge_state para user 'adrian' (17 filas)
-src/seed-nivel2.js          — Carga exercise-bank-seed.json en exercise_bank
-scripts/seed-glossary.js    — Genera/regenera concept_glossary con Claude Sonnet
-scripts/fix-symbols-case.js — Corrige letras circuladas minúscula → mayúscula en concept_glossary
-scripts/migrate-planitud.js — Migración histórica Planitud → Planicidad (ya aplicada)
+src/migrate.js                 — CREATE TABLE IF NOT EXISTS (todas las tablas)
+src/seed.js                    — Seed knowledge_state para user 'adrian' (17 filas)
+src/seed-nivel2.js             — Carga exercise-bank-seed.json en exercise_bank
+scripts/seed-nivel3.js         — Carga exercise-bank-nivel3.json en exercise_bank
+scripts/seed-glossary.js       — Genera/regenera concept_glossary con Claude Sonnet
+scripts/fix-symbols-case.js    — Corrige letras circuladas minúscula → mayúscula en concept_glossary
+scripts/fix-glossary-metadata.js — Corrige metadata de capas en concept_glossary
+scripts/fix-glossary-critical.js — Correcciones críticas puntuales de términos
+scripts/add-symbol-column.js   — Migración: agrega columna symbol a concept_glossary
+scripts/verify-nivel3.js       — Verifica integridad del banco L3
+scripts/eval-glossary.js       — Evalúa calidad del glosario generado
+scripts/qa-glossary.js         — QA del glosario
+scripts/migrate-planitud.js    — Migración histórica Planitud → Planicidad (ya aplicada)
 scripts/migrate-fundamentos.js — Migración histórica seed Fundamentos (ya aplicada)
 ```
 
