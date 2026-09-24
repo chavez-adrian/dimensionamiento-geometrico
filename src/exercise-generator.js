@@ -6,6 +6,18 @@ const fs = require('fs');
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+const EXERCISE_SCHEMA = {
+  type: 'object',
+  properties: {
+    question: { type: 'string' },
+    options: { type: 'array', items: { type: 'string' } },
+    correct_index: { type: 'integer' },
+    explanation: { type: 'string' },
+  },
+  required: ['question', 'options', 'correct_index', 'explanation'],
+  additionalProperties: false,
+};
+
 function shuffleOptions(options, correctIndex) {
   const correct = options[correctIndex];
   const shuffled = [...options];
@@ -61,16 +73,9 @@ async function generateNivel1(control, opts) {
     prompt = `Eres un experto en GD&T segun ASME Y14.5-2018.
 Genera UNA pregunta de opcion multiple de nivel vocabulario sobre el concepto: ${focusTerm}.
 Capa pedagogica actual: ${layerName}${recentContext}${seenHint}
-Devuelve SOLO un objeto JSON valido con exactamente esta estructura:
-{
-  "question": "texto de la pregunta",
-  "options": ["opcion A", "opcion B", "opcion C", "opcion D"],
-  "correct_index": 0,
-  "explanation": "explicacion clara de por que es correcta"
-}
 
 Reglas:
-- correct_index es el indice (0-3) de la respuesta correcta en el array options
+- options lleva exactamente 4 opciones; correct_index es el indice (0-3) de la respuesta correcta
 - Las 3 opciones incorrectas deben ser plausibles pero claramente incorrectas
 - La explicacion debe ser educativa y mencionar el concepto clave
 - Escribe todo en espanol`;
@@ -89,16 +94,9 @@ Definicion de ${control}: ${definicion}
 Terminos clave: ${terminos}
 
 La pregunta debe evaluar el conocimiento basico de vocabulario y definiciones.${seenHint}
-Devuelve SOLO un objeto JSON valido con exactamente esta estructura:
-{
-  "question": "texto de la pregunta",
-  "options": ["opcion A", "opcion B", "opcion C", "opcion D"],
-  "correct_index": 0,
-  "explanation": "explicacion clara de por que es correcta"
-}
 
 Reglas:
-- correct_index es el indice (0-3) de la respuesta correcta en el array options
+- options lleva exactamente 4 opciones; correct_index es el indice (0-3) de la respuesta correcta
 - Las 3 opciones incorrectas deben ser plausibles pero claramente incorrectas
 - La explicacion debe ser educativa y mencionar el concepto clave
 - Escribe todo en espanol`;
@@ -108,12 +106,10 @@ Reglas:
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     messages: [{ role: 'user', content: prompt }],
+    output_config: { format: { type: 'json_schema', schema: EXERCISE_SCHEMA } },
   });
 
-  const text = message.content[0].text.trim();
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('No JSON in response');
-  const parsed = JSON.parse(jsonMatch[0]);
+  const parsed = JSON.parse(message.content[0].text);
 
   const shuffled = shuffleOptions(parsed.options, parsed.correct_index);
   return {
@@ -145,18 +141,10 @@ Reglas de especificacion:
 Terminos clave: ${terminos}
 
 La pregunta debe evaluar comprension del concepto mecanico: cuando usar el control, por que, implicaciones practicas en fabricacion o inspeccion.
-Al menos el 40% de las preguntas generadas deben mencionar lamina de acero, embutido o troquel en la pregunta o explicacion.
-
-Devuelve SOLO un objeto JSON valido con exactamente esta estructura:
-{
-  "question": "texto de la pregunta",
-  "options": ["opcion A", "opcion B", "opcion C", "opcion D"],
-  "correct_index": 0,
-  "explanation": "explicacion clara mencionando el contexto de embutido o lamina de acero cuando sea relevante"
-}
+Cuando el control lo permita, situa la pregunta o la explicacion en la lamina de acero, el embutido o el troquel.
 
 Reglas:
-- correct_index es el indice (0-3) de la respuesta correcta
+- options lleva exactamente 4 opciones; correct_index es el indice (0-3) de la respuesta correcta
 - Las 3 opciones incorrectas deben ser plausibles
 - Escribe todo en espanol`;
 
@@ -164,12 +152,10 @@ Reglas:
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     messages: [{ role: 'user', content: prompt }],
+    output_config: { format: { type: 'json_schema', schema: EXERCISE_SCHEMA } },
   });
 
-  const text = message.content[0].text.trim();
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('No JSON in response');
-  const parsed = JSON.parse(jsonMatch[0]);
+  const parsed = JSON.parse(message.content[0].text);
 
   const shuffled = shuffleOptions(parsed.options, parsed.correct_index);
   return {
