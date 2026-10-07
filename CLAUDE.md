@@ -69,7 +69,7 @@ Usuario único: `'adrian'`. No hay autenticación.
 
 ## Dominio — leer antes de tocar código
 
-- `CONTEXT.md` — glosario completo del dominio (Fundamentos, Celda de Conocimiento, Progresión por Maestría, terminología canónica)
+- `GLOSSARY.md` — glosario completo del dominio (Fundamentos, Celda de Conocimiento, Progresión por Maestría, terminología canónica)
 - `docs/adr/` — 7 ADRs con las decisiones de arquitectura
 
 **Terminología crítica** (no sustituir):
